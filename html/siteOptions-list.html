@@ -384,10 +384,12 @@
 									id = "#probar1";
 								}
 								console.log("url:" + url)
-//								mui(id).progressbar().show();
+								//								mui(id).progressbar().show();
+								var wt = plus.nativeUI.showWaiting();
 								app.singleUpload(url, function(data) {
 									vm.items[index].value = data;
-//									mui(id).progressbar().hide();
+									wt.close()
+									//									mui(id).progressbar().hide();
 								});
 
 							})
@@ -432,10 +434,12 @@
 									id = "#probar1";
 								}
 								console.log("url:" + url)
-//								mui(id).progressbar().show();
+								//								mui(id).progressbar().show();
+								var wt = plus.nativeUI.showWaiting();
 								app.singleUpload(url, function(data) {
 									vm.items[index].value = data;
-//									mui(id).progressbar().hide();
+									//									mui(id).progressbar().hide();
+									wt.close();
 								});
 
 							})
