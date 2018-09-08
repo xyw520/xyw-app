@@ -1,0 +1,413 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/mui-ex.css" rel="stylesheet" />
+		<style>
+			.mui-content .mui-row img {
+				width: 100%;
+				height: auto;
+			}
+			/*.pad {
+				padding-right: 10px;
+				margin-top: 5px;
+			}
+			
+			.title {
+				padding: 15px;
+			}
+			
+			#btnComplete {
+				float: right;
+				line-height: 45px;
+				margin-right: 15px;
+			}*/
+			/*可公共使用,用于设置表单 label 与  input 宽度*/
+			
+			/*.mui-input-row label {
+				width: 30%;
+			}
+			
+			.mui-input-row label~input {
+				width: 70%;
+			}*/
+			/*end*/
+			
+			.mui-table-view-cell.mui-collapse .mui-table-view {
+				margin-top: 0px;
+				margin-right: 0px;
+				/*margin-left: -30px;*/
+			}
+			/*为了显示出验证提示信息*/
+			
+			.mui-input-group .mui-input-row {
+				/*height: auto;*/
+			}
+			
+			#p_btn {
+				width: 100%;
+				margin: 0 auto;
+				/*background-color: #61affe;
+				color: white;*/
+				border: none;
+				padding: 10px;
+				font-size: 18px;
+				margin-bottom: 60px;
+				/*background-color: rgb(237, 184, 6);*/
+				background:linear-gradient(to right, #ffe259, #FDC830);
+				color: white;
+				margin-top: 20px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id='header'>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">添加站点</h1>
+		</header>
+
+		<div class="mui-content" id='content'>
+			<!--<div class="mui-scroll-wrapper" id="pullrefresh" style="margin-top: 50px;">
+				<div class="mui-scroll" id='content'>-->
+
+					<div class="mui-card">
+
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell mui-collapse mui-active">
+								<a class="mui-navigate-right" href="#">基本属性[必填]</a>
+								<div class="mui-collapse-content">
+									<div class="mui-input-group">
+										<!--<div class="mui-input-row">
+											<label>排序号</label>
+											<input type="text" placeholder="请输入排序号" v-model='orderNum'>
+										</div>-->
+
+										<div class="mui-input-row">
+											<label>网站名称</label>
+											<input id='title' type="text" placeholder="请输入网站名称" name="v" data-name="rexTitle" v-model.trim="name" @blur="xv($event,'rexTitle','网站名称')">
+											<!--<div>ssss</div>-->
+
+											<!--<input type="text" placeholder="请输入网站名称" v-model='name' @blur="xv($event,'标题','rexTitle')">-->
+										</div>
+
+										<div class="mui-input-row">
+											<label>网站域名</label>
+											<input type="text" placeholder="请输入网站域名" id='domain' name="v" data-name="rexDomain" v-model.trim="domain" @blur="xv($event,'rexDomain')" @keyup="cancelLight($event)">
+										</div>
+										
+										<div class="mui-input-row">
+											<label>网站模板</label>
+											<input type="text" placeholder="请输入网站域名"  v-model.trim="templateName" readonly="readonly" >
+										</div>
+
+										<div class="mui-input-row">
+											<label>网站开启状态</label>
+											<label >{{isOnTxt}}</label>
+											<div class="mui-switch" :class="{'mui-active':isOn}" id="isOn">
+												<div class="mui-switch-handle"></div>
+											</div>
+										</div>
+
+										<ul class="mui-table-view" style='border-bottom: 1px solid #ccc;'>
+											<li class="mui-table-view-cell" style='padding-left: 23px;' @tap='openScsList'>
+												<a class="mui-navigate-right">
+													选择ip[必填]
+													<span id='result' style="margin-left: 53px;">{{ip}}</span>
+												</a>
+
+											</li>
+										</ul>
+
+									</div>
+								</div>
+							</li>
+						</ul>
+
+						<div class="seo">
+							<ul class="mui-table-view">
+								<li class="mui-table-view-cell mui-collapse ">
+									<a class="mui-navigate-right" href="#">SEO信息[必填]</a>
+
+									<div class="mui-collapse-content">
+										<div class="mui-input-group">
+											<div class="mui-input-row">
+												<label>SEO标题</label>
+											</div>
+											<div>
+												<textarea id="content" v-model.trim='seoTitle' rows="4" placeholder="请输入SEO标题" name="v" data-name="rexSeo" @blur="xv($event,'rexSeo','SEO标题')"></textarea>
+											</div>
+											<div class="mui-input-row">
+												<label>SEO关键词</label>
+											</div>
+											<div>
+												<textarea id="content" v-model.trim='seoKeywords' rows="4" placeholder="请输入SEO关键词" name="v" data-name="rexSeo" @blur="xv($event,'rexSeo','SEO关键词')"></textarea>
+											</div>
+											<div class="mui-input-row mui-plus-visible">
+												<label>SEO描述</label>
+											</div>
+											<div>
+												<textarea id="content" v-model.trim='seoDescription' rows="4" placeholder="请输入SEO描述" name="v" data-name="rexSeo" @blur="xv($event,'rexSeo','SEO描述')"></textarea>
+											</div>
+
+										</div>
+									</div>
+
+								</li>
+							</ul>
+
+						</div>
+
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell mui-collapse ">
+								<a class="mui-navigate-right" href="#">非必填</a>
+								<div class="mui-collapse-content">
+									<div class="mui-input-group">
+										<div class="mui-input-row">
+											<label>手机号码</label>
+											<input type="text" placeholder="请输入手机号码" v-model.trim='phoneNumber' data-name='rexPhone' @blur="xv($event,'rexPhone',null,'false')">
+										</div>
+
+										<div class="mui-input-row">
+											<label>邮箱</label>
+											<input type="text" placeholder="请输入邮箱" v-model.trim='email' data-name='rexEmail' @blur="xv($event,'rexEmail',null,'false')">
+										</div>
+
+										<div class="mui-input-row">
+											<label>模版文件</label>
+											<input type="text" placeholder="请输入模版文件名称" v-model='template'>
+										</div>
+
+										<div class="mui-input-row">
+											<label>模版文件ID</label>
+											<input type="text" placeholder="请输入首页模版文件ID" v-model='templateFileId'>
+										</div>
+									</div>
+								</div>
+							</li>
+						</ul>
+
+					</div>
+					<div class="mui-card" style="background-color: #efeff4;box-shadow:none">
+						<button type="button" id='p_btn' @tap='addSite()'>下一步</button>
+					</div>
+
+				<!--</div>
+			</div>-->
+
+		</div>
+		<script src="../js/immersed.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/myApp.js"></script>
+		<script src="../js/vue.min.js"></script>
+		<script src="../js/x-validate.js"></script>
+		<script type="text/javascript">
+			mui.init();
+
+			//			var self = plus.webview.currentWebview();
+
+			var siteInfo = {
+
+				templateId: '',
+				templateName:'',
+				orderNum: '',
+				name: '',
+				domain: '',
+				isOn: true,
+				isOnTxt: '',
+				ip: '',
+				serverHost: '',
+				serverPort: '',
+				wap: true,
+				seoTitle: '',
+				seoKeywords: '',
+				seoDescription: '',
+				phoneNumber: '',
+				email: '',
+				template: '',
+				templateFileId: '',
+
+				rexflag: true, //格式效验
+				flag: true, //联网效验，比如检查域名是否被占用
+
+				tem: {
+					name:'ssss'
+				} //模板信息
+			}
+
+			var vm = new Vue({
+				el: '#content',
+				data: siteInfo
+			});
+
+			//			var tem={};
+			//			
+			//			var vr = new Vue({
+			//				el: '#teminfo',
+			//				data: tem
+			//			});
+
+			
+
+			var webview_scsList = null;
+			var _self;
+			mui.plusReady(function() {
+				_self = plus.webview.currentWebview();
+
+				_self.setStyle({
+					popGesture: 'close' //开启侧滑关闭功能
+				});
+
+				//预加载主机列表页
+				webview_scsList = mui.preload({
+					url: 'scs-list.html',
+					id: 'scs-list'
+				});
+				console.log("_self.temid:"+_self.temid);
+				app.getMyTemById(_self.temid, function(data) {
+					
+					vm.templateName = data.name;
+					vm.templateId = _self.temid;
+				});
+
+			});
+
+			//打开主机列表页
+			function openScsList() {
+				webview_scsList.show("slide-in-right", 300);
+			}
+
+			//自定义事件
+			document.addEventListener('refreship', function(e) {
+				//				console.log("host0:" + e.detail.host)
+				//				console.log("port0:" + e.detail.port)
+					console.log("2:"+e.detail.ip);
+
+				vm.ip = e.detail.ip;
+				vm.serverHost = e.detail.host;
+				vm.serverPort = e.detail.port;
+			});
+
+			//获取系统分配的排序号
+			app.addSiteOrderNum(function(data) {
+				vm.orderNum = data;
+			});
+
+			//检查域名是否被占用
+			function domainUsed(domain) {
+				app.addsiteUsed(vm.domain,'', function(data) {
+					if(!data) {
+						mui.toast('域名已经被占用');
+						vm.flag = false;
+					}
+				});
+			}
+
+			switchInit();
+
+			function switchInit() {
+				vm.isOnTxt = vm.isOn ? '开启' : '关闭';
+			}
+
+			mui(".mui-scroll").on('toggle', '.mui-switch', function() {
+				if(event.detail.isActive) {
+					mui.toast('已开启');
+					get_switch()
+				} else {
+					mui.toast('已关闭');
+					get_switch()
+				}
+			});
+
+			function get_switch() {
+
+				vm.isOn = document.getElementById("isOn").classList.contains("mui-active");
+
+				switchInit();
+			}
+
+			//域名输入时取消高亮
+			function cancelLight(event) {
+				//获取事件当前对象
+				var obj = event.target;
+				//如果有则取消
+				if((obj.getAttribute('style')) != null) {
+					obj.removeAttribute('style');
+				}
+			}
+
+			function addSite() {
+				vm.rexflag = true;
+
+				//验证ip端口号主机是否为空
+				if(vm.ip == '' || vm.serverHost == '' || vm.serverPort == '') {
+					mui.toast('请选择ip');
+					return;
+				}
+
+				//验证输入格式
+				var objs = document.getElementsByName("v");
+				//遍历需要验证的元素
+				for(var i = 0; i < objs.length; i++) {
+
+					var e = {};
+					var dname;
+
+					e.target = objs[i];
+
+					dname = objs[i].getAttribute('data-name');
+
+					if(!xv(e, dname)) {
+						console.log("dname:" + dname);
+						vm.rexflag = false;
+						return;
+					}
+				}
+				console.log("vm.rexflag:" + vm.rexflag)
+				//如果本地格式效验没有问题在进行联网效验
+				if(vm.rexflag) {
+
+					//获取域名的值，验证域名是否被占用
+					app.addsiteUsed(vm.domain,'' ,function(data) {
+
+						if(data) {
+
+							//							for(var item in siteInfo) {
+							//								console.log(item + "===" + siteInfo[item]);
+							//							}
+
+							app.addSite(siteInfo, function(data) {
+								mui.toast('添加站点成功');
+								console.log("data.id:" + data.id);  
+								toBack(data.id);
+							});
+
+						} else {
+							//高亮提醒
+							document.getElementById("domain").setAttribute('style', 'border-bottom: 1px solid red;')
+							mui.toast('域名已被占用');
+						}
+					});
+				}
+			}
+
+			function toBack(siteId) {
+				console.log("siteId:" + siteId);
+				//获得列表界面的webview
+				var list = plus.webview.getWebviewById('tem-my');
+				//触发tem-my界面的自定义事件（toback）
+
+				mui.fire(list, 'toback', {
+					siteId: siteId
+				});
+
+				mui.back();
+			}
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,381 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+
+		<style>
+			#p_wrap {
+				width: 90%;
+				margin: 0 auto;
+				margin-top: 20%;
+				background-color: white;
+				border-radius: 5%;
+				padding: 15px;
+			}
+			
+			.p_text {
+				font-size: 24px;
+				color: #777;
+				text-align: center;
+				margin: 20px 0px 40px;
+			}
+			/*#phone {
+				border: none;
+				border-bottom: 1px solid #61affe;
+				text-align: center;
+				margin-bottom: 30px;
+				padding-bottom: 20px;
+			}*/
+			
+			#p_btn {
+				width: 100%;
+				margin: 0 auto;
+				/*background-color: #61affe;
+				color: white;*/
+				border: none;
+				padding: 10px;
+				font-size: 18px;
+				margin-bottom: 60px;
+				/*background-color: #77b4f2;*/
+				background: linear-gradient(to right, #ffe259, #ffa751);
+				color: white;
+			}
+			
+			#infoText {
+				text-align: center;
+				margin-bottom: 30px;
+			}
+			
+			#valid {
+				text-align: center;
+				overflow: hidden;
+				height: 0;
+			}
+			
+			#valid input {
+				text-align: center;
+				width: 40%;
+				border: none;
+				border-bottom: 1px solid #61affe;
+				padding-bottom: 20px;
+				font-size: 14px;
+			}
+			
+			.regLink {
+				text-align: center;
+			}
+			
+			.regLink a {
+				border-top: 1px solid #777;
+				padding: 10px;
+				font-size: 14px;
+				color: #777;
+			}
+			
+			.x-btn-code {
+				float: left;
+				width: 30%;
+			}
+			
+			input[type=text] {
+				float: left;
+				width: 70%;
+				border: none;
+				border-bottom: 1px solid #CCC;
+				text-align: center;
+				margin-bottom: 30px;
+				padding-bottom: 20px;
+			}
+			
+			#phone {
+				width: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div class="mui-content" id="content">
+
+			<div id='p_wrap'>
+				<div class="p_text">您的手机号是？</div>
+				<div>
+					<input class="" maxLength=11 type="text" name="" id="phone" v-model.trim='phoneNumber' placeholder="请输入本人实名认证手机号" @keyup="testPhone($event)" />
+				</div>
+				<input type="text" name="" id="validCode" onpaste="return false" placeholder="请输入验证码" v-model.trim="code" @keyup="testCode($event)" />
+				<button class="x-btn-code" id='btnCode' disabled="true">获取验证码</button>
+				<!--<div id='infoText'></div>
+				<div id="valid">
+					<span>验证码：</span>
+					<input type="text" name="" id="validCode" value="123456" placeholder="请输入验证码" />
+					<span id="countDown"></span>
+				</div>-->
+
+				<button type="button" id='p_btn' disabled="true" @tap='login()'>登录</button>
+
+				<div class="regLink">
+					<a id='reg'>注册</a>|
+					<a>其他</a>
+				</div>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script src="js/myApp.js"></script>
+		<script src="js/vue.min.js"></script>
+		<script src="js/x-validate.js"></script>
+		<script type="text/javascript">
+		</script>
+		<script type="text/javascript">
+			mui.init();
+
+			var vm = new Vue({
+				el: "#content",
+				data: {
+					phoneNumber: '',
+					code: '',
+					deviceId: '',
+					niceName: ''
+				}
+			});
+			
+			var home=null;
+			mui.plusReady(function() {
+				home = plus.webview.getLaunchWebview();
+				//读取本地存储，检查是否为首次启动
+				//				var showGuide = plus.storage.getItem("lauchFla");
+				//仅支持竖屏显示
+				plus.screen.lockOrientation("portrait-primary");
+				//				if(showGuide) {
+				//					//有值，说明已经显示过了，无需显示；
+				//					//关闭splash页面；
+				//					plus.navigator.closeSplashscreen();
+				//					plus.navigator.setFullscreen(false);
+				//					//预加载
+				//					//					preload();
+				//				} else {
+				//					//显示启动导航
+				//					mui.openWindow({
+				//						id: 'guide',
+				//						url: 'guide.html',
+				//						styles: {
+				//							popGesture: "none"
+				//						},
+				//						show: {
+				//							aniShow: 'none'
+				//						},
+				//						waiting: {
+				//							autoShow: false
+				//						}
+				//					});
+				//					//延迟的原因：优先打开启动导航页面，避免资源争夺
+				//					setTimeout(function() {
+				//						//预加载
+				//						//						preload();
+				//					}, 200);
+				//				}
+
+				//每次打开都显示欢迎页
+
+				//				//显示启动导航
+				//				mui.openWindow({
+				//					id: 'guide',
+				//					url: 'guide.html',
+				//					styles: {
+				//						popGesture: "none"
+				//					},
+				//					show: {
+				//						aniShow: 'none'
+				//					},
+				//					waiting: {
+				//						autoShow: false
+				//					}
+				//				});
+				//
+				//				//延迟的原因：优先打开启动导航页面，避免资源争夺
+				//				setTimeout(function() {
+				//					//预加载
+				//					var webview_index = mui.preload({
+				//						url: 'index.html',
+				//						id: 'index',
+				//					});
+				//						preload();
+
+				//自动登录
+//				var webview_index = mui.preload({
+//					url: 'index.html',
+//					id: 'index',
+//					//					styles: { // 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
+//					//							titleNView: { // 窗口的标题栏控件
+//					//								titleText: "首页", // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+//					//								titleColor: "#FFFFFF", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+//					//								titleSize: "17px", // 字体大小,默认17px
+//					//								backgroundColor: "#FAC850", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+//					//																
+//					//							}
+//					//						}
+//				});
+				var settings = app.getSettings();
+				settings.autoLogin = true;
+				var state = app.getState();
+
+				if(settings.autoLogin && state.token) {
+					app.loadUserInfo(function(data) {
+						if(data) {
+//							plus.webview.currentWebview().hide();
+//							webview_index.show("slide-in-right", 300);
+						plus.webview.currentWebview().close();
+						}
+					});
+				}
+
+				var first = false;
+				mui.back = function() {
+
+					//首次按键，提示‘再按一次退出应用’
+					if(!first) {
+						first = new Date().getTime();
+						mui.toast('再按一次退出应用');
+						setTimeout(function() {
+							first = null;
+						}, 1500);
+					} else {
+						if(new Date().getTime() - first < 1500) {
+							plus.runtime.quit();
+						}
+					}
+
+					return true;
+				}
+
+			});
+
+			//检查手机格式 
+			function testPhone(event) {
+				//获取事件当前对象
+				var obj = event.target;
+				console.log(obj.value);
+
+				//文本框只能输入数字代码(小数点也不能输入)，测试存在有问题，输一个汉子字符不能但是能输入两个
+				obj.value = obj.value.replace(/\D/g, '')
+
+				var rex = '^1(3[0-9]|4[57]|5[0-35-9]|8[0-9]|70)\\d{8}$';
+				var r = new RegExp(rex);
+				//验证通过则让 获取验证码 按钮 可以用，否则不能用
+				if(r.test(obj.value)) {
+					document.getElementById("btnCode").disabled = false;
+				} else {
+					document.getElementById("btnCode").disabled = true;
+				}
+			}
+
+			//效验验证码
+			function testCode(event) {
+				//获取事件当前对象
+				var obj = event.target;
+				if(obj.value.length == 6) {
+					document.getElementById("p_btn").disabled = false;
+				} else {
+					document.getElementById("p_btn").disabled = true;
+				}
+			}
+
+			var InterValObj; //timer变量，控制时间 
+			var count = 60; //间隔函数，1秒执行 
+			var curCount; //当前剩余秒数 
+			//发送验证码按钮
+			document.getElementById('btnCode').addEventListener('tap', function() {
+				//javascript下按钮属性为disabled禁用状态后touchstart事件依然会触发？
+				//这里采取 return 的方式
+				if(this.getAttribute("disabled") == 'true') {
+					return false;
+				}
+
+				var phone = document.getElementById("phone");
+				curCount = count;
+
+				//设置button效果，开始计时 
+				this.setAttribute("disabled", "true"); //禁用按钮 
+				this.innerHTML = '<span style="color:#777">重发</span><span style="color:red">（' + curCount + 's）</span>';
+				InterValObj = window.setInterval(SetRemainTimes, 1000); //启动计时器，1秒执行一次 
+				app.loginPhoneNumberSend(phone.value, function(data) {
+
+				});
+			});
+
+			//timer处理函数 
+			function SetRemainTimes() {
+				if(curCount == 0) {
+					window.clearInterval(InterValObj); //停止计时器 
+					document.getElementById("btnCode").setAttribute("disabled", "false"); //启用按钮 
+					document.getElementById("btnCode").innerHTML = '<span  style="color:#49cc90">重发</span>';
+					//					code = ""; //清除验证码。如果不清除，过时间后，输入收到的验证码依然有效   
+				} else {
+					curCount--;
+					document.getElementById("btnCode").innerHTML = '<span style="color:#777">重发</span><span style="color:red">（' + curCount + 's）</span>';
+				}
+			}
+
+			function login() {
+				console.log(vm.phoneNumber + "==" + vm.code);
+				app.loginPhoneNumber(vm.phoneNumber, vm.code, function(data) {
+					if(data.status == '200') {
+						loadUserinfo();
+
+					} else {
+						mui.toast(data);
+					}
+				});
+			}
+
+			/**
+			 *	登录成功以后从服务器获取个人信息  
+			 *  如果获取个人信息失败也算登录失败 ，注销登录信息
+			 */
+			var loadUserinfo = function() {
+				//获取个人信息 并保存
+				app.loadUserInfo(function(data) {
+					if(data) {
+
+						mui.toast("恭喜您 登录成功！");
+						//跳转到主页
+						toMain();
+					} else {
+						mui.toast("获取个人信息错误：" + err);
+						return;
+					}
+
+				});
+			};
+
+			function toMain() {
+				//登录成功跳转到主页													
+//				plus.webview.create('index.html', 'index', {
+//					titleNView: {
+//						titleText: '首页',
+//						titleColor: '#FFFFFF',
+//						autoBackButton: true,
+//						backgroundColor: '#FAC850',
+//
+//					},
+//					statusbar: {
+//						background: '#FAC850'
+//					}
+//				}, 'zoom-out', 500, function() {
+//					mui.toast('已进入主页')
+//				});
+				console.log("登录成功")
+				
+				
+				mui.fire(home, 'reSitename');
+				
+				plus.webview.currentWebview().close();
+
+			}
+		</script>
+	</body>
+
+</html>

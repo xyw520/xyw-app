@@ -1,0 +1,122 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style>
+			.mui-content .mui-row img {
+				width: 100%;
+				height: auto;
+			}
+			
+			.pad {
+				padding-right: 10px;
+				margin-top: 5px;
+			}
+			
+			.title {
+				padding: 15px;
+			}
+			
+			.mui-content .mui-row img {
+				height: 250px;
+				/*border: 1px solid #f3bc6e9e;*/
+			}
+			
+			@media (min-width:400px) {
+				.mui-content .mui-row img {
+					height: 280px;
+					/*border: 1px solid #f3bc6e9e;*/
+				}
+			}
+		</style>
+	</head>
+
+	<body>
+		
+
+		<div class="mui-content">
+			<div class="mui-scroll-wrapper" id="pullrefresh" >
+				<div class="mui-scroll" id='content' style="padding-left: 10px;">
+					<div class="mui-row" style='margin-bottom: 20px;'>
+						<div class="title pad mui-col-sm-12 mui-col-xs-12">
+							欢迎来到模板市场
+						</div>
+
+						<div class="pad mui-col-sm-6 mui-col-xs-6" v-for='(item,i) in items'>
+							<img :src="items[i].titleImage" />
+							<p>{{items[i].name}}</p>
+							<p>价格:{{items[i].price}}￥</p>
+							<button @tap='buyTem(items[i].id)' type="button" class="mui-btn mui-btn-warning">购买</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/myApp.js"></script>
+		<script src="../js/vue.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+
+			var vm = new Vue({
+				el: "#content",
+				data: {
+					items: []
+				}
+			});
+
+			app.temMarketList(1, 30, function(data) {
+				vm.items = data;
+
+			});
+
+			console.log("vm.items :" + vm.items)
+
+			for(var i = 0; i < vm.items.length; i++) {
+				var str = (vm.items)[i].titleImage;
+				if(str==null){
+					(vm.items)[i].titleImage='../images/noImg.png';
+					continue;
+				}
+				str = str.split(";");
+				(vm.items)[i].titleImage = str[0];
+
+			}
+
+			//买模板
+			function buyTem(id) {
+				app.temMarketBuy(id, function(data) {
+					mui.toast('购买成功')
+				});
+			}
+
+			mui('.mui-scroll-wrapper').scroll({
+				scrollY: true, //是否竖向滚动
+				scrollX: true, //是否横向滚动
+				startX: 0, //初始化时滚动至x
+				startY: 0, //初始化时滚动至y
+				indicators: false, //是否显示滚动条
+				//				deceleration: 0.00000001, //阻尼系数,系数越小滑动越灵敏
+				bounce: true //是否启用回弹
+			});
+
+			mui.plusReady(function() {
+				plus.navigator.setStatusBarStyle('light');
+				
+				_self = plus.webview.currentWebview();
+
+				_self.setStyle({
+					popGesture: 'close' //开启侧滑关闭功能
+				});
+
+			});
+		</script>
+	</body>
+
+</html>

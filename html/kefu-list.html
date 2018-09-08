@@ -1,0 +1,125 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/mui-ex.css" rel="stylesheet" />
+		<link href="../css/iconfont2.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id='header'>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">客服组列表</h1>
+			<a class="mui-icon iconfont icon-tianjia  mui-pull-right" id='add'></a>
+		</header>
+		<div class="mui-content" >
+			<div class="mui-scroll-wrapper" style="margin-top: 65px;">
+				<div class="mui-scroll" id='content'>
+					<ul class="mui-table-view" id='list_ul'>
+
+						<li class="mui-table-view-cell" v-for='(item,i) in items'>
+							<div class="mui-slider-right mui-disabled">
+								<a class="mui-btn  " style='background-color:#C0C0C0' @tap.stop="addPerson($event,item.id)">编辑</a>
+								<!--<a class="mui-btn mui-btn-yellow " @tap.stop="update($event,item.id)">修改</a>-->
+								<a class="mui-btn mui-btn-red " @tap.stop="del($event,item.id)">删除</a>
+							</div>
+							<div class="mui-slider-handle">
+								<div class="mui-table-cell">
+									名称：{{item.name}}
+								</div>
+							</div>
+						</li>
+
+					</ul>
+
+				</div>
+			</div>
+		</div>
+		<script src="../js/immersed.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/vue.min.js"></script>
+		<script src="../js/myApp.js"></script>
+		<script type="text/javascript">
+			mui.init();
+
+			var vm = new Vue({
+				el: '#content',
+				data: {
+					items: []
+				}
+			});
+
+			mui.plusReady(function() {
+
+				loadList();
+
+				mui('.mui-scroll-wrapper').scroll();
+			});
+
+			function loadList() {
+
+				app.cspList(1, 30, function(data) {
+					vm.items = data
+					console.log("vm.items:" + JSON.stringify(vm.items))
+				})
+			}
+
+			//删除
+			function del(event, id) {
+				var obj = event.target;
+				var btn = ["确定", "取消"];
+				mui.confirm('考虑好了？', '确认删除吗？', btn, function(e) {
+					if(e.index == 0) {
+
+						app.cspDel(id, function(data) {
+							if(data) {
+								//刷新页面
+								obj.parentNode.parentNode.parentNode.removeChild(obj.parentNode.parentNode);
+							}
+						})
+
+					} else {
+						setTimeout(function() {
+							mui.swipeoutClose(obj.parentNode.parentNode);
+						}, 0);
+					}
+
+				});
+
+			}
+
+			function addPerson(event, id) {
+				var obj = event.target;
+				//				webview_update.show();
+				mui.openWindow({
+					url: 'kefuPerson-add.html',
+					id: 'kefuPerson-add',
+					extras: {
+						uid: id
+					}
+				});
+
+				setTimeout(function() {
+					mui.swipeoutClose(obj.parentNode.parentNode);
+				}, 1500);
+			}
+
+			document.getElementById("add").addEventListener('tap', function() {
+				mui.openWindow({
+					url: 'kefu-add.html',
+					id: 'kefu-add'
+				});
+			});
+
+			document.addEventListener('reloadList', function() {
+				app.log("重新加载");
+				loadList();
+			});
+		</script>
+	</body>
+
+</html>

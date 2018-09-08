@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/mui-ex.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id="header">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">问答模式推广页</h1>
+		</header>
+		<div class="mui-content" id="content">
+			<ul class="mui-table-view">
+
+				<li class="mui-table-view-cell" @tap='openPopList()' id='c'>
+					<a class="mui-navigate-right">
+						问答管理
+					</a>
+				</li>
+				<li class="mui-table-view-cell" @tap='openCusList()'>
+					<a class="mui-navigate-right">
+						客服组管理
+					</a>
+				</li>
+
+			</ul>
+		</div>
+		<script src="../js/immersed.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/vue.min.js"></script>
+		<script type="text/javascript">
+			mui.init()
+
+			//			document.getElementById("c").addEventListener('tap',function(){
+			//				alert(22);
+			//			})
+
+			var vm = new Vue({
+				el: '#content',
+				data: {}
+			});
+
+			function openPopList() {
+				mui.openWindow({
+					url: 'pop-list.html',
+					id: 'pop-list',
+
+					//					styles: {
+					//						titleNView: { // 窗口的标题栏控件
+					//							titleText: "问答列表", // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+					//							titleColor: "#FFFFFF", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+					//							titleSize: "17px", // 字体大小,默认17px
+					//							backgroundColor: "#FAC850", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+					//							autoBackButton: true,
+					//							buttons: [{
+					//								fontSrc:'../fonts/iconfont.ttf',
+					//								text: '\ue634',
+					//								float: 'right',
+					//								color: 'white',
+					//								colorPressed: "#CF2D28",
+					//								fontSize:'24px',
+					//								onclick:add
+					//							}],
+					//						}
+					//					}
+				});
+			}
+
+			function add() {
+				mui.openWindow({
+					url: 'spp/popularize/pop-add.html',
+					id: 'pop-add',
+
+				});
+			}
+
+			function openCusList() {
+				mui.openWindow({
+					url: 'kefu-list.html',
+					id: 'kefu-list'
+				});
+			}
+
+			mui.plusReady(function() {
+
+				var ws = plus.webview.currentWebview();
+//				ws.setStyle({
+//					titleNView: { // 窗口的标题栏控件
+//						titleText: "问答列表", // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+//						titleColor: "#FFFFFF", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+//						titleSize: "17px", // 字体大小,默认17px
+//						backgroundColor: "#FAC850", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+//						autoBackButton: true,
+//						buttons: [{
+//							fontSrc: '../fonts/iconfont.ttf',
+//							text: '\ue634',
+//							float: 'right',
+//							color: 'white',
+//							colorPressed: "#CF2D28",
+//							fontSize: '24px',
+//							onclick: function() {
+//								mui.openWindow({
+//									url: 'spp/popularize/pop-add.html',
+//									id: 'pop-add',
+//
+//								});
+//							}
+//						}],
+//					}
+//				});
+
+				var index = plus.webview.getWebviewById('html/main-home.html');
+
+				ws.drag({
+					direction: 'right',
+					moveMode: 'followFinger'
+				}, {
+					view: index,
+					moveMode: 'silent'
+				}, function(e) {
+					//滑动到end执行mui.back()事件
+					if(e.type == 'end' && e.result) {
+						mui.back();
+					}
+				});
+
+			});
+		</script>
+	</body>
+
+</html>

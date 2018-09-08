@@ -1,0 +1,497 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/iconfont.css" />
+		<script src="../js/autosize.js"></script>
+		<style>
+			a {
+				color: #666;
+			}
+			
+			.st,
+			.at {
+				line-height: 47px;
+				padding: 0px 20px;
+			}
+			
+			.at {
+				float: right;
+			}
+			
+			li {
+				list-style: none;
+			}
+			
+			body,
+			.mui-content,
+			input[type=text],
+			textarea {
+				background-color: rgb(255, 255, 255);
+			}
+			
+			input[type=text],
+			textarea {
+				border: none;
+			}
+			
+			input[type=text] {
+				font-size: 20px;
+				border-bottom: 1px solid #999;
+				padding-top: 20px;
+				padding-bottom: 20px;
+				line-height: 20px;
+			}
+			
+			#textarea {
+				/*border: 1px solid #ccc*/
+			}
+			
+			#title {
+				/*text-align: center;*/
+			}
+			/*栅格*/
+			
+			.mui-row {
+				padding: 6px;
+				margin-bottom: 15px;
+			}
+			
+			.mui-row img {
+				width: 100%;
+				height: auto;
+			}
+			
+			.mui-col-xs-4 {
+				/*padding: 10px 10px 10px 0px;*/
+				height: 100px;
+				overflow: hidden;
+				width: 31.3333%;
+				margin: 1%;
+				position: relative;
+			}
+			
+			@media (min-width:400px) {
+				.mui-col-xs-4 {
+					height: 120px;
+				}
+			}
+			
+			.delBtn {
+				position: absolute;
+				top: 0;
+				right: 0;
+				/*width: 20px;
+				height: 20px;*/
+				padding: 0px 3px;
+				border-radius: 0px 0px 0px 8px;
+				background-color: rgba(0, 0, 0, 0.5);
+				/*background-color: #222222;*/
+			}
+			
+			.icon-del {
+				color: white;
+			}
+			
+			.icon-xiangji {
+				font-size: 40px;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-top: -20px;
+				margin-left: -25px;
+				color: white;
+			}
+			
+			.iconTxt {
+				font-size: 16px;
+				position: absolute;
+				top: 70%;
+				left: 50%;
+				margin-left: -31px;
+				color: #666;
+			}
+			
+			.cameraicon {
+				background-color: rgba(100, 100, 100, 0.1);
+			}
+			/*end*/
+			/*.share {
+				margin-top: 10px;
+				padding: 10px;
+				background-color: rgba(100, 100, 100, 0.1);
+			}
+			
+			.share .stext {
+				font-size: 14px;
+			}
+			
+			.share .iconfont {
+				font-size: 22px;
+				color: #777
+			}*/
+			/*option*/
+			
+			.option {
+				font-size: 13px;
+				color: #777;
+			}
+			
+			.option .iconfont {
+				padding-right: 5px;
+			}
+			
+			.option .category button {
+				margin-right: 10px;
+			}
+			
+			.option div {
+				padding-right: 20px;
+				margin-top: 10px;
+			}
+			
+			.option div li {
+				background-color: rgba(100, 100, 100, 0.1);
+				border-radius: 20px;
+				padding: 9px 15px;
+			}
+			/*seo*/
+			
+			.mui-table-view {
+				/*background-color: rgba(100, 100, 100, 0.1);*/
+			}
+			
+			.mui-card {
+				/*background-color: rgba(100, 100, 100, 0.1);*/
+				color: #666;
+			}
+			
+			.noCompulsory .mui-input-row label {
+				padding-left: 0;
+			}
+			
+			.noCompulsory .mui-input-row input {
+				font-size: 14px;
+			}
+			
+			.noCompulsory .mui-input-row label {
+				width: 25%;
+			}
+			
+			.noCompulsory .mui-input-row label~input,
+			.mui-input-row label~select,
+			.mui-input-row label~textarea {
+				width: 75%;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">文章详情</h1>
+		</header>
+		<div class="mui-content" id='content'>
+
+			<form action="">
+				<div class="mui-input-row" style="margin: 10px 5px;">
+					<!--@blur="xv($event,'rexTitle')"-->
+					<input id='title' type="text" placeholder="请输入标题" readonly="readonly" name="v" data-name="rexTitle" v-model.trim="title" @blur="xv($event,'rexTitle')">
+				</div>
+				<div class="mui-input-row" style="margin: 10px 5px;">
+					<textarea id="textarea" rows="8" placeholder="请输入内容" readonly="readonly" name="v" data-name="rexContent" v-model.trim="content" @blur="xv($event,'rexContent')"></textarea>
+				</div>
+
+				<div class="mui-row " id='myCamera'>
+
+					<div class="mui-col-xs-4 cameraicon" @click="app.showActionSheet()">
+						<span class="iconfont icon-xiangji"></span>
+						<span class="iconTxt">添加图片</span>
+					</div>
+
+					<div class="mui-col-xs-4" v-for='(item,i) in imgs' v-if='imgs[i]!=""'>
+						<img :src="imgs[i]" />
+					</div>
+
+				</div>
+
+				<div class="option mui-row">
+
+					<div class="mui-col-sm-5 mui-col-xs-5">
+						<li class="mui-table-view-cell">
+							<a id='showUserPicker'>
+								<span class="iconfont icon-ziyuan"></span> <span id='result'>{{categoryName}}</span>
+							</a>
+						</li>
+					</div>
+
+					<div class="mui-col-sm-12 mui-col-xs-12">
+						<li class="mui-table-view-cell">
+							<a id='location'>
+								<span class="iconfont icon-didian"></span> <span id='locationTxt'>{{location}}</span>
+							</a>
+						</li>
+					</div>
+
+				</div>
+
+				<div class="seo">
+					<div class="mui-card">
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell mui-collapse ">
+								<a class="mui-navigate-right" href="#">SEO信息[可选填写/不填写自动补全]</a>
+								<div class="mui-collapse-content">
+
+									<div class="mui-input-row">
+										<label>SEO标题</label>
+									</div>
+									<div>
+										<textarea id="content" readonly="readonly" v-model.trim='seoTitle' rows="4" placeholder="输入SEO标题" name="v" data-name="rexSeo" @blur="xv($event,'rexSeo','SEO标题')"></textarea>
+									</div>
+									<div class="mui-input-row">
+										<label>SEO关键词</label>
+									</div>
+									<div>
+										<textarea id="content" readonly="readonly" v-model.trim='seoKeywords' rows="4" placeholder="输入SEO关键词" name="v" data-name="rexSeo" @blur="xv($event,'rexSeo','SEO关键词')"></textarea>
+									</div>
+									<div class="mui-input-row mui-plus-visible">
+										<label>SEO描述</label>
+									</div>
+									<div>
+										<textarea id="content" readonly="readonly" v-model.trim='seoDescription' rows="4" placeholder="输入SEO描述" name="v" data-name="rexSeo" @blur="xv($event,'rexSeo','SEO描述')"></textarea>
+									</div>
+								</div>
+							</li>
+						</ul>
+
+					</div>
+				</div>
+
+				<div class="noCompulsory">
+					<div class="mui-card">
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell mui-collapse">
+								<a class="mui-navigate-right" href="#">非必填</a>
+								<div class="mui-collapse-content">
+
+									<div class="mui-input-row">
+										<label>排序号</label>
+										<div class="mui-numbox" data-numbox-min='1' data-numbox-max='999' style='float: left;'>
+											<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+											<input id="test" class="mui-input-numbox" readonly="readonly" type="number" value="5" v-model="orderNum" />
+											<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+										</div>
+									</div>
+
+									<div class="mui-input-row">
+										<label>路径</label>
+										<input readonly="readonly" type="text" placeholder="请输入路径" v-model.trim='path' @blur="atlPathUsed(path,pathOld)">
+									</div>
+									<p style="text-align: center;"><span style='color:red'>{{degInfo}}</span></p>
+									<p style="text-align: center;"><span style='color:green'>{{sefInfo}}</span></p>
+
+									<div class="mui-input-row">
+										<label>作者</label>
+										<input readonly="readonly" type="text" placeholder="请输入作者" v-model.trim='author' name="v" data-name="rexLess20" @blur="xv($event,'rexLess20','作者')">
+									</div>
+
+									<div class="mui-input-row">
+										<label>编辑</label>
+										<input readonly="readonly" type="text" placeholder="请输入编辑" v-model.trim='editor' name="v" data-name="rexLess20" @blur="xv($event,'rexLess20','编辑')">
+									</div>
+
+									<div class="mui-input-row">
+										<label>来源</label>
+										<input readonly="readonly" type="text" placeholder="请输入来源" v-model.trim='infoSource' name="v" data-name="rexLess50" @blur="xv($event,'rexLess50','来源')">
+									</div>
+
+									<div class="mui-input-row">
+										<label>来源URL</label>
+										<input readonly="readonly" type="text" placeholder="请输入来源URL" v-model.trim='infoSourceUrl' name="v" data-name="rexLess255" @blur="xv($event,'rexLess255','来源网址')">
+									</div>
+
+									<div class="mui-input-row">
+										<label>发布时间</label>
+										<label id='resultDate' style='width: 45%;'></label>
+										<button id='demo1' data-options='{}' class="btn mui-btn mui-btn-block" style='float: right;width: 30%;font-size: 14px;'>选择时间 </button>
+									</div>
+
+									<div class="mui-input-row">
+										<label>点击数</label>
+										<div class="mui-numbox" data-numbox-min='1' data-numbox-max='999' style='float: left;'>
+											<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+											<input readonly="readonly" id="test" class="mui-input-numbox" type="number" value="5" v-model="clickNum" />
+											<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+										</div>
+									</div>
+
+								</div>
+							</li>
+						</ul>
+
+					</div>
+				</div>
+
+			</form>
+
+		</div>
+
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/vue.min.js"></script>
+		<script src="../js/myApp.js"></script>
+		<script src="../js/release.js"></script>
+
+		<script type="text/javascript">
+			mui.init();
+
+			var vm = new Vue({
+				el: '#content',
+				data: {
+					"author": '',
+					"categoryId": '',
+					"categoryName": '',
+					"clickNum": '',
+					"color": '',
+					"content": '',
+					"editor": '',
+					"id": '',
+					"images": '',
+					"infoSource": '',
+					"infoSourceUrl": '',
+					"isBold": '',
+					"isBoldTxt": '',
+					"isElite": '',
+					"isEliteTxt": '',
+					"isRecommend": '',
+					"isRecommendTxt": '',
+					"isRecycle": '',
+					"isRecycleTxt": '',
+					"keywords": '',
+					"orderNum": '',
+					"path": '',
+					"seoDescription": '',
+					"seoKeywords": '',
+					"seoTitle": '',
+					"siteId": '',
+					"title": '',
+					"titleImage": '',
+					"titleShort": '',
+					imgs: [],
+					degInfo: '',
+					sefInfo: '',
+					flag: true //是否可以提交
+				}
+			});
+
+			mui.plusReady(function() {
+				_self = plus.webview.currentWebview();
+
+				_self.setStyle({ 
+					popGesture: 'hide' //开启侧滑关闭功能
+				});
+			});
+
+			//自定义监听事件
+			document.addEventListener('get_detail', function(e) {
+				var id = event.detail.itemid;
+				vm.categoryName = event.detail.cateName;
+				vm.categoryId = event.detail.cateId;
+				if(!id) {
+					return;
+				}
+
+				var item;
+
+				app.getInfoById(id, app.api['atlById'], function(data) {
+					item = data;
+
+					//					for(var key in item) {
+					//						console.log(key + '==' + item[key]);
+					//					}
+
+					vm.author = item.author;
+					vm.clickNum = item.clickNum;
+					vm.color = item.color;
+					vm.editor = item.editor;
+					vm.id = item.id;
+					vm.images = item.images;
+					vm.infoSource = item.infoSource;
+					vm.infoSourceUrl = item.infoSourceUrl;
+					vm.path = item.path;
+					vm.title = item.title;
+					vm.titleImage = item.titleImage;
+					vm.titleShort = item.titleShort;
+
+					vm.content = item.content;
+					vm.orderNum = item.orderNum;
+					vm.seoDescription = item.seoDescription;
+					vm.seoKeywords = item.seoKeywords;
+					vm.seoTitle = item.seoTitle;
+					vm.siteId = item.siteId;
+
+					vm.isBold = item.isBold;
+					vm.isElite = item.isElite;
+					vm.isRecommend = item.isRecommend;
+					vm.isRecycle = item.isRecycle;
+
+					vm.isBoldTxt = vm.isBold ? '是' : '否';
+					vm.isEliteTxt = vm.isElite ? '是' : '否';
+					vm.isRecommendTxt = vm.isRecommend ? '是' : '否';
+					vm.isRecycleTxt = vm.isRecycle ? '是' : '否';
+
+					//得到图片路径
+					var strimg = vm.images;
+
+					//					vm.imgs = strimg.split("|");
+
+					var arr = strimg.split("|");
+
+					var cimgs = document.getElementById("myCamera").innerHTML = "";
+					//					//清空图片
+					//					for(var i=cimgs.length;i>=0;i--){
+					//						cimgs[i]
+					//					}
+
+					for(var i = 0; i < arr.length - 1; i++) {
+						console.log(i + "===" + arr[i]);
+
+						app.createItem(arr[i]);
+
+					}
+
+					previewImage();
+
+				});
+
+			});
+		</script>
+
+		<script type="text/javascript">
+			// 扩展API加载完毕后调用onPlusReady回调函数 
+			document.addEventListener('plusready', onPlusReady, false);
+			// 扩展API加载完毕，现在可以正常调用扩展API
+			function onPlusReady() {
+				plus.geolocation.getCurrentPosition(function(p) {
+					//					alert('Geolocation\nLatitude:' + p.coords.latitude + '\nLongitude:' + p.coords.longitude + '\nad:' + p.addresses); 
+
+					//				''	vm.location=p.address.city+p.address.district+p.address.street;
+					var ad = p.addresses;
+					if(ad == undefined) {
+						ad = p.address.street;
+					}
+					vm.location = p.address.city + "·" + p.address.district + "·" + ad;
+
+				}, function(e) {
+					alert('Geolocation error: ' + e.message);
+				});
+			}
+		</script>
+
+	</body>
+
+</html>

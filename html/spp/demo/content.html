@@ -1,0 +1,112 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../../css/mui.min.css" rel="stylesheet" />
+		<!-- 引入jQuery -->
+		<script src="../jquery.min.js"></script>
+
+		<script src="../webuploader.js"></script>
+		<!-- 插件核心 -->
+		<script src="../Eleditor.js"></script>
+
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			#article-body {
+				width: 100%;
+				min-height: 300px;
+				box-sizing: border-box;
+				padding: 10px;
+				color: #444;
+			}
+			
+			#article-body img {
+				width: 100%;
+				height: auto;
+				box-sizing: border-box;
+			}
+			
+			.Eleditor-placeholder {
+				font-size: 24px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">编辑内容</h1>
+		</header>
+		<div class="mui-content">
+			<div id="article-body">
+				
+			</div>
+		</div>
+		<script src="../../../js/mui.min.js"></script>
+		<script src="../../../js/myApp.js"></script>
+		<script type="text/javascript">
+			var content = '';
+
+			/*实例化一个编辑器*/
+			var artEditor = new Eleditor({
+				el: '#article-body',
+				upload: {
+					server: app.api['imgUpload'],
+					headers: {
+						'Authorization': app.getState().token,
+					},
+					compress: true,
+					fileSizeLimit: 10,
+					formName: 'file', //设置文件name,
+					accept: { //accept一般不用设置
+						title: 'Images',
+						extensions: 'gif,jpg,jpeg,bmp,png,webp',
+						mimeTypes: 'image/gif,image/jpg,image/jpeg,image/bmp,image/png,image/webp'
+					}
+				},
+			});
+
+			var w;
+			mui.init({
+				beforeback: function() {
+					//获得列表界面的webview
+					var list;
+					if(w.type == 2) {
+						list = plus.webview.getWebviewById('spp-update');
+
+					} else {
+						list = plus.webview.getWebviewById('spp-add3');
+					}
+
+					content = artEditor.getContent();
+
+					//触发列表界面的自定义事件（refresh）,从而进行数据刷新
+					mui.fire(list, 'refresh', {
+						content: content
+					});
+					//返回true，继续页面关闭逻辑
+					return true;
+				}
+			});
+
+			mui.plusReady(function() {
+				w = plus.webview.currentWebview();
+				console.log("w.type:" + w.type);
+
+				if(w.type == 2) {
+					document.getElementById("article-body").innerHTML = "<div id='c' class=''>"+w.content+"</div>";
+				}
+
+			});
+		</script>
+
+	</body>
+
+</html>

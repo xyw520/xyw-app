@@ -1,0 +1,550 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/mui-ex.css" rel="stylesheet" />
+		<link href="../css/iconfont2.css" rel="stylesheet" />
+		<style type="text/css">
+			.addAnswer {
+				/*text-align: center;*/
+				margin: 10px;
+				margin-top: 20px;
+				margin-bottom: 20px;
+			}
+			/*栅格*/
+			
+			.mui-row {
+				padding: 6px;
+				margin-bottom: 15px;
+			}
+			
+			.mui-row img {
+				width: 100%;
+				height: auto;
+			}
+			
+			.mui-col-xs-4 {
+				/*padding: 10px 10px 10px 0px;*/
+				height: 100px;
+				overflow: hidden;
+				width: 31.3333%;
+				margin: 1%;
+				position: relative;
+				/*border-radius: 100%;*/
+			}
+			
+			@media (min-width:400px) {
+				.mui-col-xs-4 {
+					height: 120px;
+				}
+			}
+			
+			.delBtn {
+				position: absolute;
+				top: 0;
+				right: 0;
+				/*width: 20px;
+				height: 20px;*/
+				padding: 0px 3px;
+				border-radius: 0px 0px 0px 8px;
+				background-color: rgba(0, 0, 0, 0.5);
+				/*background-color: #222222;*/
+			}
+			
+			.icon-del {
+				color: white;
+			}
+			
+			.icon-tianjiatupian {
+				font-size: 60px;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-top: -20px;
+				margin-left: -30px;
+				color: white;
+			}
+			
+			.iconTxt {
+				font-size: 14px;
+				position: absolute;
+				top: 70%;
+				left: 50%;
+				margin-left: -34px;
+				color: #666;
+			}
+			
+			.cameraicon {
+				background-color: rgba(100, 100, 100, 0.1);
+			}
+			/*end*/
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id='header'>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">编辑客服人员</h1>
+			<!--<a class="mui-icon iconfont  mui-pull-right" style='font-size: 18px;line-height: 25px;' id='btnComplete'>完成</a>-->
+		</header>
+		<div class="mui-content" id='content'>
+
+			<div class="mui-card">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell mui-collapse mui-active">
+						<a class="mui-navigate-right" href="#">当前分组信息</a>
+						<div class="mui-collapse-content">
+							<form class="mui-input-group">
+
+								<div class="mui-input-row">
+									<label><span style='color: red;'>*</span>客服分组名称</label>
+									<input type="text" v-model.trim='items.name'>
+								</div>
+								<div class="mui-input-row">
+									<label><span style='color: red;'>*</span>排序号</label>
+									<input type="text" v-model.trim='items.orderNum' placeholder="请输入排序号">
+								</div>
+								<div class="mui-input-row">
+									<label><span style='color: red;'>*</span>客服分组id</label>
+									<input type="text" v-model.trim='items.id'>
+								</div>
+								<div class="mui-input-row">
+									<label><span style='color: red;'>*</span>站点id</label>
+									<input type="text" v-model.trim='items.siteId' placeholder="请输入分组名称" name="v" data-name="rexTitle" @blur="xv($event,'rexTitle','分组名称')">
+								</div>
+
+							</form>
+						</div>
+					</li>
+
+				</ul>
+
+				<div class="mui-card-footer">
+					<a></a>
+					<a class="mui-card-link" @tap="saveKefu()">保存修改</a>
+					<a></a>
+				</div>
+
+			</div>
+
+			<div class="mui-card" v-for="(item,i) in items.personJson">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell mui-collapse mui-active">
+						<a class="mui-navigate-right" href="#">客服人员</a>
+						<div class="mui-collapse-content">
+							<form class="mui-input-group">
+
+								<div class="mui-input-row">
+									<label><span style='color: red;'>*</span>客服昵称</label>
+									<input type="text" v-model.trim='item.nikename' placeholder="请输入客服昵称" name="v" data-name="rexTitle" @blur="xv($event,'rexTitle','客服昵称')">
+								</div>
+
+								<div class="mui-input-row">
+									<label><span style='color: red;'>*</span>手机号码</label>
+									<input type="text" v-model.trim='item.mobliephone' placeholder="请输入手机号码" name="v" data-name="rexPhone" @blur="xv($event,'rexPhone')">
+								</div>
+
+								<div class="mui-input-row">
+									<label><span style='color: red;'>*</span>qq号码</label>
+									<input type="text" v-model.trim='item.qq' placeholder="请输入qq号码" name="v" data-name="rexNum" @blur="xv($event,'rexNum','qq号码')">
+								</div>
+
+								<div class="mui-input-row">
+									<label><span style='color: red;'>*</span>微信号</label>
+									<input type="text" v-model.trim='item.weixin_number' placeholder="请输入微信号">
+								</div>
+
+								<div class=" mui-row " id='myCamera'>
+
+									<div class="mui-col-xs-4 cameraicon" id='addAvatar' @click="showActionSheet(item,i,3)">
+										<span class="iconfont icon-tianjiatupian"></span>
+										<span class="iconTxt">微信二维码</span>
+									</div>
+
+									<div class="mui-col-xs-4" v-if='item.weixin_qrcode!=""'>
+										<img :src="item.weixin_qrcode" />
+									</div>
+
+								</div>
+
+								<div class="mui-row">
+									<div :id="'weixin_qrcode'+i">
+									</div>
+								</div>
+
+								<div class="mui-input-row">
+									<label><span style='color: red;'>*</span>展示次数</label>
+									<input type="text" v-model.trim='item.show_num' placeholder="请输入展示次数" name="v" data-name="rexNum" @blur="xv($event,'rexNum','展示次数')">
+								</div>
+
+								<div class="mui-input-row">
+									<label><span style='color: red;'>*</span>性别</label>
+									<div style='float: left;'>
+										<div class="mui-input-row mui-radio ">
+											<label>男</label>
+											<input :name="'radio1'+i" type="radio" value='MAN' v-model="item.gender" @tap="getGender($event,i)">
+										</div>
+									</div>
+									<div style='float: left;'>
+										<div class="mui-input-row mui-radio ">
+											<label>女</label>
+											<input :name="'radio1'+i" type="radio" value='WOMEN' v-model="item.gender" @tap="getGender($event,i)">
+										</div>
+									</div>
+								</div>
+
+								<div class="mui-input-row">
+									<label>开启状态</label>
+									<div style='float: left;' class="mui-switch " :class="{'mui-active':item.isOn}" @tap='getIsOn($event,i,item.isOn)'>
+										<div class="mui-switch-handle"></div>
+									</div>
+								</div>
+
+							</form>
+						</div>
+					</li>
+
+				</ul>
+
+				<div class="mui-card-footer">
+
+					<!--<a class="mui-card-link" @tap="saveAnswer(item)">{{ item.id==null ? '保存问答':'修改问答' }}</a>-->
+					<a class="mui-card-link" @tap="saveKefu()" v-if='item.id==null'>保存</a>
+					<a class="mui-card-link" @tap="saveKefu()" v-else>提交修改</a>
+
+					<a class="mui-card-link" @tap='delPerson(items.personJson,item)'>删除</a>
+				</div>
+
+			</div>
+
+			<div class='addAnswer'>
+
+				<button type="button" class='btn-add mui-btn mui-btn-warning ' id='btnAddAnswer' @tap='addPerson()'>
+					<i class="mui-icon iconfont icon-tianjia "></i>添加人员
+				</button>
+			</div>
+		</div>
+		<script src="../js/immersed.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/vue.min.js"></script>
+		<script src="../js/x-validate.js"></script>
+		<script src="../js/myutil.js"></script>
+		<script src="../js/myApp.js"></script>
+		<script type="text/javascript">
+			mui.init({
+				beforeback: function() {
+					//获得列表界面的webview
+					var list;
+
+					list = plus.webview.getWebviewById('kefu-list');
+
+					//触发列表界面的自定义事件（refresh）,从而进行数据刷新
+					mui.fire(list, 'reloadList');
+					//返回true，继续页面关闭逻辑
+					return true;
+				}
+			});
+
+			var vm = new Vue({
+				el: '#content',
+				data: {
+					items: {
+						
+					}
+				}
+			});
+
+			var w;
+			mui.plusReady(function() {
+				w = plus.webview.currentWebview();
+				console.log("uid:" + w.uid)
+				loadCus(w.uid);
+			});
+
+			function getGender(event, index) {
+				var obj = event.target;
+				vm.items.personJson[index].gender = obj.value
+			}
+
+			function getIsOn(event, index, isOn) {
+				var obj = event.target;
+
+				if(isOn == true) {
+					vm.items.personJson[index].isOn = false;
+				} else {
+					vm.items.personJson[index].isOn = true;
+				}
+
+				//				console.log(vm.items.personList[index].isOn) 
+			}
+
+			//保存
+			//			function savePerson(item) {
+			//				console.log("vm.items:" + JSON.stringify(vm.items));
+			//				//实际上是修改操作，而不是添加
+			//				app.cspUpdate(item, function(data) {
+			//
+			//				});
+			//			}
+
+			//修改分组信息
+			function saveKefu() {
+				console.log('vm.items:'+JSON.stringify(vm.items) )
+				vm.items.personList=vm.items.personJson;
+				console.log('vm.items:'+JSON.stringify(vm.items) )
+				app.cspUpdate(vm.items, function(data) {
+					mui.toast('保存成功');
+				});
+			}
+
+			//删除
+			function delPerson(arr, item) {
+				var btn = ["确定", "取消"];
+				mui.confirm('考虑好了？', '确认删除吗？', btn, function(e) {
+
+					if(e.index == 0) {
+						console.log('删除前vm.items:'+JSON.stringify(vm.items) )
+						util.removeObjWithArr(arr, item);
+						console.log('删除后vm.items:'+JSON.stringify(vm.items) )
+						//实际上是修改操作
+						app.cspUpdate(vm.items, function(data) {
+							mui.toast('删除成功')
+						});
+
+					}
+
+				});
+			}
+
+			//获取当前客服组信息
+			function loadCus(id) {
+				console.log("id:" + id)
+				app.getInfoById(id, app.api['cspGetById'], function(data) {
+					vm.items = data;
+					if(vm.items.personJson==null){
+						vm.items.personJson=[];
+					}else{
+						vm.items.personJson=JSON.parse(vm.items.personJson)
+					}
+					
+					console.log("vm.items.personJson:"+JSON.stringify(vm.items) )
+				});
+			}
+
+			//添加客服人员
+			function addPerson() {
+				console.log(1)
+				vm.items.personJson.push({
+					gender: 'UNKNOWN',
+					isOn: true,
+					mobliephone: '',
+					nikename: '',
+					qq: '',
+					show_num: '',
+					weixin_number: '',
+					weixin_qrcode: '',
+
+				});
+			}
+
+			//备份mui.back，mui.back已将窗口关闭逻辑封装的比较完善（预加载及父子窗口），因此最好复用mui.back
+			var old_back = mui.back;
+			mui.back = function() {
+				var btn = ["确定", "取消"];
+				mui.confirm('关闭窗口将不会保存数据？', '数据尚未提交', btn, function(e) {
+					if(e.index == 0) {
+						console.log('关闭操作')
+						//执行mui封装好的窗口关闭逻辑；
+						old_back();
+					}
+				});
+			}
+
+			//-------------------------------------------
+
+			function showActionSheet(item, index, type) {
+
+				var bts = [{
+					title: "相册"
+				}, {
+					title: "拍照"
+				}];
+				plus.nativeUI.actionSheet({
+						cancel: "取消",
+						buttons: bts
+					},
+					function(e) {
+						//打开相册
+						if(e.index == 1) {
+							galleryImgsSelected(item, index, type);
+						}
+						//打开拍照
+						if(e.index == 2) {
+							getImage(item, index, type);
+						}
+					}
+				);
+			}
+
+			/*小数转百分数*/
+			/*Number()数据类型转换，指定截取转换后的小数点后几位(四舍五入)*/
+			function toPercent(point) {
+				var str = Number(point * 100).toFixed(1);
+				str += "%";
+				return str;
+			}
+
+			/*百分数转小数*/
+			function toPoint(percent) {
+				var str = percent.replace("%", "");
+				str = str / 100;
+				return str;
+			}
+
+			function loadImage(url, callback) {
+				app.log("加载的图片路径是：" + url);
+				var img = new Image();
+				img.onload = function() {
+					img.onload = null;
+					callback(img);
+					//					return img;
+				}
+				img.src = url;
+			}
+
+			//获取图片宽度，的得到缩放百分比
+			function getImgPercent(img) {
+				var p;
+				console.log('width:' + img.width + ',height:' + img.height);
+				if(img.width > 200) {
+					var c = 200 / img.width;
+					p = toPercent(c);
+				} else {
+					p = "100%";
+				}
+				return p;
+			}
+
+			//图片压缩
+			function compressImage(img, p, callback) {
+
+				plus.zip.compressImage({
+					src: img.src,
+					dst: "_doc/gallery/" + img.src,
+					quality: 20,
+					width: p,
+					overwrite: true
+				}, function(e) {
+					//					console.log("e.target:" + e.target);
+					//					for(var i in e){
+					//						console.log(i+"---"+e[i]);
+					//					}
+					return callback(e.target);
+				}, function(err) {
+					console.error("压缩失败：" + err.message);
+				});
+			}
+
+			//从相册获取图片
+			function galleryImgsSelected(item, index, type) {
+				plus.gallery.pick(function(e) {
+
+						loadImage(e.files[0], function(img) {
+							console.log("img:" + img.width);
+							//获取百分比
+							var p = getImgPercent(img);
+							console.log("p:" + p)
+							//压缩图片
+							compressImage(img, p, function(url) {
+								var id = '';
+								if(type == 1) {
+									id = "#anProbar" + index;
+								} else if(type == 2) {
+									id = "#ctProbar" + index;
+								} else if(type == 0) {
+									id = "#probar1";
+								} else if(type == 3) {
+									id = "#weixin_qrcode" + index;
+								}
+								console.log("url:" + url)
+								mui(id).progressbar().show();
+								app.singleUpload(url, function(data) {
+									item.weixin_qrcode = data;
+									mui(id).progressbar().hide();
+								});
+
+							})
+
+						});
+
+					},
+					function(e) {
+						console.log('取消选择图片');
+					}, {
+						filter: 'none',
+						multiple: true,
+						maximum: 1,
+						selected: null, //lfs 则会记住上次的选择，null 则不会记住上次的选择
+						system: false,
+						onmaxed: function() {
+							plus.nativeUI.alert("最多只能选择" + 1 + "张图片");
+						}
+					}); // 最多选择maximum张图片
+			}
+
+			//拍照获取图片
+			function getImage(item, index, type) {
+				console.log("type:" + type)
+				var cmr = plus.camera.getCamera();
+				cmr.captureImage(function(p) {
+					app.log('成功：' + p);
+					plus.io.resolveLocalFileSystemURL(p, function(entry) {
+
+						loadImage(entry.toLocalURL(), function(img) {
+							console.log("img:" + img.width);
+							//获取百分比
+							var p = getImgPercent(img);
+							console.log("p:" + p)
+							//压缩图片
+							compressImage(img, p, function(url) {
+								var id = '';
+								if(type == 1) {
+									id = "#anProbar" + index;
+								} else if(type == 2) {
+									id = "#ctProbar" + index;
+								} else if(type == 0) {
+									id = "#probar1";
+								} else if(type == 3) {
+									id = "#weixin_qrcode" + index;
+								}
+								console.log("url:" + url)
+								mui(id).progressbar().show();
+								app.singleUpload(url, function(data) {
+									item.weixin_qrcode = data;
+									mui(id).progressbar().hide();
+								});
+
+							})
+
+						});
+
+					}, function(e) {
+						app.log('读取拍照文件错误：' + e.message);
+					});
+				}, function(e) {
+					app.log('失败：' + e.message);
+				}, {
+					filename: '_doc/camera/',
+					index: 1
+				});
+			}
+
+			//----------------------------------------------
+		</script>
+	</body>
+
+</html>

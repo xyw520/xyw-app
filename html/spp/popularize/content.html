@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../../css/mui-ex.css" rel="stylesheet" />
+		<!-- 引入jQuery -->
+		<script src="../jquery.min.js"></script>
+
+		<script src="../webuploader.js"></script>
+		<!-- 插件核心 -->
+		<script src="../Eleditor.js"></script>
+
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			#article-body {
+				width: 100%;
+				min-height: 300px;
+				box-sizing: border-box;
+				padding: 10px;
+				color: #444;
+			}
+			
+			#article-body img {
+				width: 100%;
+				height: auto;
+				box-sizing: border-box;
+			}
+			
+			.Eleditor-placeholder {
+				font-size: 24px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id='header'>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">编辑内容</h1>
+		</header>
+		<div class="mui-content" id='content'>
+			<div id="article-body">
+				
+			</div>
+		</div>
+		<script src="../../../js/immersed.js"></script>
+		<script src="../../../js/mui.min.js"></script>
+		<script src="../../../js/myApp.js"></script>
+		<script type="text/javascript">
+			var w;
+			var type;
+			var objId;
+			var content;
+
+			var typeContent;
+			var a_index;
+			var c_index;
+
+			mui.init({
+				beforeback: function() {
+					//获得列表界面的webview
+					var list;
+					if(type == 2) { //代表是添加问题操作
+						list = plus.webview.getWebviewById('pop-add');
+
+					}
+					if(type == 3) { //当前是添加回答操作
+						list = plus.webview.getWebviewById('pop-addAnswer');
+					} else if(type==4)  {
+						list = plus.webview.getWebviewById('pop-update');
+					}
+
+					content = artEditor.getContent();
+					console.log("content:" + content);
+					console.log("dgi:" + document.getElementById("article-body").innerHTML);
+
+					//					artEditor.destory();
+
+					//触发列表界面的自定义事件（refresh）,从而进行数据刷新
+					mui.fire(list, 'refreshws', {
+						content: content,
+						objId: objId,
+
+						typeContent: typeContent,
+						a_index: a_index,
+						c_index: c_index
+					});
+					//返回true，继续页面关闭逻辑
+					return true;
+				}
+			});
+		var artEditor;
+			mui.plusReady(function() {
+				w = plus.webview.currentWebview();
+
+				w.setStyle({
+					popGesture: 'none'
+				});
+
+				type = w.type;
+				objId = w.objId;
+				typeContent = w.typeContent;
+				a_index = w.a_index;
+				c_index = w.c_index;
+
+				console.log("dgi1:" + document.getElementById('article-body').innerHTML);
+
+				var html = document.getElementById('article-body');
+				console.log("穿过来的数据：" + w.content)
+//				if(w.content=='点击编辑回答内容'||w.content=='点击编辑评论内容'){
+//					w.content='<p>'+w.content+'</p>'
+//				}
+				document.getElementById("article-body").innerHTML = w.content;
+
+				console.log("dgi2:" + document.getElementById('article-body').innerHTML);
+				/*实例化一个编辑器*/
+				artEditor = new Eleditor({
+					el: '#article-body',
+					upload: {
+						server: app.api['imgUpload'],
+						headers: {
+							'Authorization': app.getState().token,
+						},
+						compress: true,
+						fileSizeLimit: 10,
+						formName: 'file', //设置文件name,
+						accept: { //accept一般不用设置
+							title: 'Images',
+							extensions: 'gif,jpg,jpeg,bmp,png,webp',
+							mimeTypes: 'image/gif,image/jpg,image/jpeg,image/bmp,image/png,image/webp'
+						}
+					},
+				});
+
+			});
+
+		</script>
+
+	</body>
+
+</html>

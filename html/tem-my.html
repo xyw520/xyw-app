@@ -1,0 +1,190 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/mui-ex.css" rel="stylesheet" />
+		<style>
+			.mui-content .mui-row img {
+				width: 100%;
+				height: auto;
+			}
+			
+			.pad {
+				padding-right: 10px;
+				margin-top: 5px;
+			}
+			.mui-content .mui-row img{
+				height: 280px;
+			}
+			.title {
+				padding:5px 15px;
+			}
+			
+			#btnComplete {
+				float: right;
+				line-height: 45px;
+				margin-right: 15px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id='header'>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">我的模板</h1>
+			<!--<span id='btnComplete'>下一步</span>-->
+		</header>
+
+		<div class="mui-content">
+			<div class="mui-scroll-wrapper" id="pullrefresh" style="margin-top: 50px;">
+				<div class="mui-scroll" id='content' style="padding-left: 10px;">
+					<div class="mui-row" style='margin-bottom: 20px;'>
+						<div class="title pad mui-col-sm-12 mui-col-xs-12">
+							第一步，请您先选择站点模板
+						</div>
+						<div class="title pad mui-col-sm-12 mui-col-xs-12">
+							已购买的模板：
+						</div>
+						<!--<div class="pad mui-col-sm-6 mui-col-xs-6">
+							<img src="../images/noImg.png" />
+							
+							<p>1233</p>
+							<button  type="button" class="mui-btn mui-btn-warning">使用</button>
+						</div>-->
+						<div class="pad mui-col-sm-6 mui-col-xs-6" v-for='(item,i) in items'>
+							<img :src="items[i].titleImage" />
+							<p>{{items[i].name}}</p>
+							<button @tap='useTem(items[i].id,items[i].name)' type="button" class="mui-btn mui-btn-warning">使用</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+			<script src="../js/immersed.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/myApp.js"></script>
+		<script src="../js/vue.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+
+			var vm = new Vue({
+				el: "#content",
+				data: {
+					items: [],
+					siteId: ''
+				}
+			});
+
+			app.myTems(1, 30, function(data) {
+				vm.items = data;
+			});
+			
+			
+			for	(var i=0;i<vm.items.length;i++){
+				
+				var str=(vm.items)[i].titleImage;
+				if(str==null){
+					(vm.items)[i].titleImage='../images/noImg.png';
+					continue;
+				}
+				str=str.split(";");  
+				(vm.items)[i].titleImage=str[0];
+				
+			}
+			
+
+			//使用模板
+			function useTem(id,name) {
+				if(type == 2) { //代表当前是修改操作
+					//返回修改页面并且更新
+					//获得列表界面的webview
+					var list = plus.webview.getWebviewById('site-updateSite');
+					//触发列表界面的自定义事件（refresh）
+					mui.fire(list, 'refreshTem', {
+						temid: id,
+						temName:name
+					});
+					mui.back()
+				} else {
+					mui.openWindow({
+						url: 'site-addSite.html',
+						id: 'site-addSite',
+						extras: {
+							temid: id //扩展参数
+						}
+					});
+				}
+
+			}
+
+			mui('.mui-scroll-wrapper').scroll({
+				scrollY: true, //是否竖向滚动
+				scrollX: true, //是否横向滚动
+				startX: 0, //初始化时滚动至x
+				startY: 0, //初始化时滚动至y
+				indicators: false, //是否显示滚动条
+				//				deceleration: 0.00000001, //阻尼系数,系数越小滑动越灵敏
+				bounce: true //是否启用回弹
+			});
+
+			var type;
+
+			mui.plusReady(function() {
+//				_self = plus.webview.currentWebview();
+//				_self.setStyle({
+//					popGesture: 'close' //开启侧滑关闭功能
+//				});
+//
+//				type = _self.type;
+
+
+
+			});
+
+			var home = null;
+
+			function toggleSite(siteId) {
+				app.switchSite(siteId, function(data) {
+
+					mui.toast("切换成功");
+					//					//获取home页
+					//					if(!home){
+					//						home = plus.webview.getWebviewById('main-home');
+					//					}
+					//					console.log("home:" + home);
+					// 获取所有Webview窗口
+//					var wvs = plus.webview.all();
+//					for(var i = 0; i < wvs.length; i++) {
+//						if(i == 2) {
+//							console.log('webview' + i + ': ' + wvs[i].id);
+//							home = wvs[i];
+//						}
+//					}
+
+					home = plus.webview.getLaunchWebview();;
+
+					//触发home页获取当前站点信息事件
+					mui.fire(home, 'reSitename');
+
+					mui.back();
+
+				});
+			}
+
+			//自定义事件
+			document.addEventListener('toback', function(e) {
+				
+				console.log("tem-my:e.detail.siteId--"+e.detail.siteId);
+				
+				toggleSite(e.detail.siteId);
+
+			});
+
+		</script>
+	</body>
+
+</html>

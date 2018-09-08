@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>首页</title>
+		<script src="js/mui.min.js"></script>
+		<script src="js/iconfont.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style>
+			html,
+			body {
+				background-color: #efeff4;
+			}
+			
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+				padding-bottom: 51px;
+			}
+			/*.mui-title{
+				color: none;
+			}*/
+			
+			.icon {
+				/* 通过设置 font-size 来改变图标大小 */
+				width: 2em;
+				height: 2em;
+				/* 图标和文字相邻时，垂直对齐 */
+				vertical-align: -0.15em;
+				/* 通过设置 color 来改变 SVG 的颜色/fill */
+				fill: currentColor;
+				/* path 和 stroke 溢出 viewBox 部分在 IE 下会显示
+            	 normalize.css 中也包含这行 */
+				overflow: hidden;
+			}
+			
+			li {
+				list-style: none;
+			}
+			
+			.x-wrap {
+				height: 250px;
+				width: 100%;
+				/*background-image: url(../images/home-bg.jpg);*/
+				background-size: cover;
+				background-position: center;
+			}
+			
+			.x-bg-mask {
+				position: absolute;
+				top: 0;
+				left: 0;
+				background-color: rgba(255, 255, 255, 0.7);
+				width: 100%;
+				height: 250px;
+				z-index: 1;
+			}
+			
+			.mui-col-sm-12,
+			.mui-col-sm-6 {
+				z-index: 2;
+			}
+			
+			.x-title {
+				padding: 10px 15px;
+				font-size: 14px;
+			}
+			
+			.x-title-icon {
+				float: left;
+				width: 5px;
+				background-color: rgb(237, 184, 6);
+				height: 18px;
+				padding: 10px 0px;
+				margin-right: 10px;
+			}
+			
+			.x-toggleSite {
+				/*border:1px solid red;*/
+			}
+			
+			.x-cbtn {
+				/*border:1px solid red;*/
+				text-align: center;
+				padding-right: 20px;
+				margin-bottom: 20px;
+			}
+			
+			.x-cbtn li {
+				background-color: rgb(250, 200, 80);
+				color: white;
+				border-radius: 5px;
+				margin-left: 15px;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<header id='header' class="mui-bar mui-bar-nav" style='height: 65px;'>
+			<h1 class="mui-title" style='color:white'>首页</h1>
+		</header>
+		<div style='height: 300px;background-image: url(images/home-bg.jpg);background-size: cover;background-repeat: no-repeat;'></div>
+		<div class="mui-content">
+			<div class="mui-scroll-wrapper" id="pullrefresh" style='margin-top: 30px;'>
+				<div class="mui-scroll" id='content'>
+					<div class="mui-row x-wrap">
+						<div class="mui-col-sm-12 mui-col-xs-12" style="font-size: 24px;padding-top: 20px;">
+							<li class="mui-table-view-cell">
+								欢迎：<span id='user'></span>
+							</li>
+						</div>
+						<div class="mui-col-sm-12 mui-col-xs-12 " style=";margin-bottom: 10px;">
+							<li class="mui-table-view-cell">
+								当前管理站点：<span id='currentSiteName'>{{siteName}}</span>
+							</li>
+						</div>
+						<div class="mui-col-sm-6 mui-col-xs-6 x-cbtn">
+							<li class="mui-table-view-cell">
+								<a id='toggleSite' class='x-toggleSite'>选择站点</a>
+							</li>
+						</div>
+						<div class="mui-col-sm-6 mui-col-xs-6 x-cbtn">
+							<li class="mui-table-view-cell">
+								<a id='startSite' class='x-toggleSite'>开始建站</a>
+							</li>
+						</div>
+						<div class="mui-col-sm-6 mui-col-xs-6 x-cbtn">
+							<li class="mui-table-view-cell">
+								<a id='indexToHtml' class='x-toggleSite'>发布首页</a>
+							</li>
+						</div>
+
+						<div class="mui-col-sm-6 mui-col-xs-6 x-cbtn">
+							<li class="mui-table-view-cell">
+								<a id='incToHtml' class='x-toggleSite'>发布公共页</a>
+							</li>
+						</div>
+
+						<div class='x-bg-mask'></div>
+					</div>
+					<div class='x-title'>
+						<span class='x-title-icon'></span>常用功能
+					</div>
+					<ul class="mui-table-view mui-grid-view mui-grid-9">
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" id='tem'>
+							<a href="#">
+								<svg class="icon" aria-hidden="true">
+									<use xlink:href="#icon-mobanku"></use>
+								</svg>
+								<div class="mui-media-body">模板市场</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" id="siteOptions">
+							<a>
+								<svg class="icon" aria-hidden="true">
+									<use xlink:href="#icon-chezhurenzhengziliaopeizhi"></use>
+								</svg>
+								<div class="mui-media-body">配置信息</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" id="siteManage">
+							<a>
+								<svg class="icon" aria-hidden="true">
+									<use xlink:href="#icon-zhandianguanli"></use>
+								</svg>
+								<div class="mui-media-body">站点管理</div>
+							</a>
+						</li>
+
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" id='slide'>
+							<a href="#">
+								<svg class="icon" aria-hidden="true">
+									<use xlink:href="#icon-tupian"></use>
+								</svg>
+								<div class="mui-media-body">幻灯片管理</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" id="article">
+							<a href="#">
+								<svg class="icon" aria-hidden="true">
+									<use xlink:href="#icon-tuijianwenzhang-"></use>
+								</svg>
+								<div class="mui-media-body">文章管理</div>
+							</a>
+						</li>
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" id='singlePageManage'>
+							<a href="#">
+								<svg class="icon" aria-hidden="true">
+									<use xlink:href="#icon-iconxiewenzhang"></use>
+								</svg>
+								<div class="mui-media-body">单页管理</div>
+							</a>
+						</li>
+
+					</ul>
+
+					<div class='x-title'>
+						<span class='x-title-icon'></span>定制功能
+					</div>
+					<ul class="mui-table-view mui-grid-view mui-grid-9">
+						<li class="mui-table-view-cell mui-media mui-col-xs-4 mui-col-sm-3" id='popManage'>
+							<a href="#">
+								<svg class="icon" aria-hidden="true">
+									<use xlink:href="#icon-iconxiewenzhang"></use>
+								</svg>
+								<div class="mui-media-body">推广页</div>
+							</a>
+						</li>
+
+					</ul>
+
+					<div style='height: 200px;'></div>
+
+				</div>
+			</div>
+		</div>
+
+		<script src="js/immersed.js"></script>
+		<script src="js/util.js"></script>
+		<script src="js/myApp.js"></script>
+		<script src="js/vue.min.js"></script>
+		<script type="text/javascript">
+			(function() {
+
+				mui.init({
+					swipeBack: true //启用右滑关闭功能
+				});
+
+				var vm = new Vue({
+					el: '#content',
+					data: {
+						siteName: ''
+					}
+				});
+
+				siteName();
+
+				function siteName() {
+					app.getSite(function(data) {
+						if(data) {
+							vm.siteName = data.name;
+						} else {
+							vm.siteName = '未设置';
+						}
+
+					});
+				}
+
+				var siteId;
+
+				document.getElementById("user").innerHTML = app.getUserinfo().niceName;
+				//自定义事件，用于从设置页面返回之后更新图像
+				window.addEventListener('niceName', function() {
+					document.getElementById("user").innerHTML = app.getUserinfo().niceName;
+				});
+
+				//选择站点
+				document.getElementById("toggleSite").addEventListener('tap', function() {
+					var ws = plus.webview.currentWebview();
+					ws.id = "main-home";
+					mui.openWindow({
+						url: 'html/site-toggleSite.html',
+						id: 'site-toggleSite'
+					});
+				});
+
+				//开始建站
+				document.getElementById("startSite").addEventListener('tap', function() {
+					mui.openWindow({
+						url: 'html/tem-my.html',
+						id: 'tem-my'
+					});
+				});
+
+				//发布首页
+				document.getElementById("indexToHtml").addEventListener('tap', function() {
+					app.indexToHtml('', function(data) {});
+				});
+
+				//发布公共页
+				document.getElementById("incToHtml").addEventListener('tap', function() {
+					app.incToHtml('', function(data) {});
+				});
+
+				//模板市场
+				document.getElementById("tem").addEventListener('tap', function() {
+					mui.openWindow({
+						url: 'html/temMarket-list.html',
+						id: 'temMarket-list',
+						styles: { // 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
+							titleNView: { // 窗口的标题栏控件
+								titleText: "模板市场", // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+								titleColor: "#FFFFFF", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+								titleSize: "17px", // 字体大小,默认17px
+								backgroundColor: "#FAC850", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+								autoBackButton: true,
+
+							}
+						}
+					});
+				});
+
+				//站点配置信息
+				document.getElementById("siteOptions").addEventListener('tap', function() {
+					mui.openWindow({
+						url: 'html/siteOptions-list.html',
+						id: 'siteOptions-list'
+					});
+				});
+
+				//站点管理
+				document.getElementById("siteManage").addEventListener('tap', function() {
+					mui.openWindow({
+						url: 'html/site-siteList.html',
+						id: 'site-siteList'
+					});
+				});
+
+				//幻灯片管理
+				document.getElementById("slide").addEventListener('tap', function() {
+					mui.openWindow({
+						url: 'html/slide-list.html',
+						id: 'slide-list'
+					});
+				});
+
+				//文章管理
+				document.getElementById("article").addEventListener('tap', function() {
+					mui.openWindow({
+						url: 'html/articleManage.html',
+						id: 'articleManage'
+					});
+				});
+
+				//单页管理
+				document.getElementById("singlePageManage").addEventListener('tap', function() {
+					mui.openWindow({
+						url: 'html/spcManage.html',
+						id: 'spcManage'
+					});
+				});
+
+				//推广页管理
+				document.getElementById("popManage").addEventListener('tap', function() {
+					mui.openWindow({
+						url: 'html/popularize-Manage.html',
+						id: 'popularize-Manage',
+						//					styles: { // 窗口参数 参考5+规范中的WebviewStyle,也就是说WebviewStyle下的参数都可以在此设置
+						//						titleNView: { // 窗口的标题栏控件
+						//							titleText: "问答模式推广页管理", // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+						//							titleColor: "#FFFFFF", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+						//							titleSize: "17px", // 字体大小,默认17px
+						//							backgroundColor: "#FAC850", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+						//							autoBackButton: true,
+						//							
+						//						}
+						//					}
+					});
+				});
+
+				//自定义事件
+				window.addEventListener('reSitename', function() {
+					siteName();
+
+				});
+
+				mui.plusReady(function() {
+
+					var self = plus.webview.currentWebview(),
+						leftPos = Math.ceil((window.innerWidth - 60) / 2); // 设置凸起大图标为水平居中
+
+					//					plus.navigator.setStatusBarStyle('UIStatusBarStyleBlackOpaque'); 
+					plus.navigator.setStatusBarBackground('#6b6b83');
+					plus.navigator.setStatusBarStyle('light');
+
+					self.id = 'index.html';
+
+					/**	
+					 * drawNativeIcon 绘制带边框的半圆，
+					 * 实现原理：
+					 *   id为bg的tag 创建带边框的圆
+					 *   id为bg2的tag 创建白色矩形遮住圆下半部分，只显示凸起带边框部分
+					 * 	 id为iconBg的红色背景图
+					 *   id为icon的字体图标
+					 *   注意创建先后顺序，创建越晚的层级越高
+					 */
+					var drawNativeIcon = util.drawNative('icon', {
+						bottom: '5px',
+						left: leftPos + 'px',
+						width: '60px',
+						height: '60px'
+					}, [{
+						tag: 'rect',
+						id: 'bg',
+						position: {
+							top: '1px',
+							left: '0px',
+							width: '100%',
+							height: '100%'
+						},
+						rectStyles: {
+							color: '#fff',
+							radius: '50%',
+							borderColor: '#ccc',
+							borderWidth: '1px'
+						}
+					}, {
+						tag: 'rect',
+						id: 'bg2',
+						position: {
+							bottom: '-0.5px',
+							left: '0px',
+							width: '100%',
+							height: '45px'
+						},
+						rectStyles: {
+							color: '#fff'
+						}
+					}, {
+						tag: 'rect',
+						id: 'iconBg',
+						position: {
+							top: '5px',
+							left: '5px',
+							width: '50px',
+							height: '50px'
+						},
+						rectStyles: {
+							color: '#FAC850',
+							radius: '50%'
+						}
+					}, {
+						tag: 'font',
+						id: 'icon',
+						text: '\ue468', //此为字体图标Unicode码'\e600'转换为'\ue600'
+						position: {
+							top: '0px',
+							left: '5px',
+							width: '50px',
+							height: '100%'
+						},
+						textStyles: {
+							fontSrc: '_www/fonts/mui.ttf',
+							align: 'center',
+							color: '#fff',
+							size: '30px'
+						}
+					}]);
+					// append 到父webview中
+					self.append(drawNativeIcon);
+
+					//自定义监听图标点击事件
+					var active_color = '#fff';
+					drawNativeIcon.addEventListener('click', function(e) {
+						//						mui.alert('你点击了图标，你在此可以打开摄像头或者新窗口等自定义点击事件。', '悬浮球点击事件');
+
+						mui.openWindow({
+							url: 'html/atlPage-add.html',
+							id: 'atlPage-add',
+							show: {
+								aniShow: 'slide-in-bottom'
+							}
+						})
+
+						// 重绘字体颜色
+						if(active_color == '#fff') {
+							drawNativeIcon.drawText('\ue468', {}, {
+								fontSrc: '_www/fonts/mui.ttf',
+								align: 'center',
+								color: '#000',
+								size: '30px'
+							}, 'icon');
+							active_color = '#000';
+						} else {
+							drawNativeIcon.drawText('\ue468', {}, {
+								fontSrc: '_www/fonts/mui.ttf',
+								align: 'center',
+								color: '#fff',
+								size: '30px'
+							}, 'icon');
+							active_color = '#fff';
+						}
+
+					});
+					// 中间凸起图标绘制及监听点击完毕
+
+					// 创建子webview窗口 并初始化
+					var aniShow = {};
+					util.initSubpage(aniShow);
+
+					var nview = plus.nativeObj.View.getViewById('tabBar'),
+						activePage = plus.webview.currentWebview(),
+						targetPage,
+						subpages = util.options.subpages,
+						pageW = window.innerWidth,
+						currIndex = 0;
+
+					/**
+					 * 根据判断view控件点击位置判断切换的tab
+					 */
+					nview.addEventListener('click', function(e) {
+						var clientX = e.clientX;
+						console.log("clientX:" + clientX);
+						//						if(clientX > 0 && clientX <= parseInt(pageW * 0.25)) {
+						//							currIndex = 0;
+						//						} else if(clientX > parseInt(pageW * 0.25) && clientX <= parseInt(pageW * 0.45)) {
+						//							currIndex = 1;
+						//						} 
+						//						else if(clientX > parseInt(pageW * 0.45) && clientX <= parseInt(pageW * 0.8)) {
+						//							currIndex = 2;
+						//						} else {
+						//							currIndex = 3;
+						//						}
+
+						if(clientX > 0 && clientX <= parseInt(pageW * 0.33)) {
+							currIndex = 0;
+						} else if(clientX > parseInt(pageW * 0.66) && clientX <= parseInt(pageW * 0.9)) {
+							currIndex = 1;
+						}
+
+						console.log("currIndex：" + currIndex)
+						// 匹配对应tab窗口	
+						if(currIndex > 0) {
+							targetPage = plus.webview.getWebviewById(subpages[currIndex - 1]);
+						} else {
+							targetPage = plus.webview.currentWebview();
+						}
+
+						if(targetPage == activePage) {
+							return;
+						}
+
+						if(currIndex !== 3) {
+							//底部选项卡切换
+							util.toggleNview(currIndex);
+							// 子页面切换
+							util.changeSubpage(targetPage, activePage, aniShow);
+							//更新当前活跃的页面
+							activePage = targetPage;
+						} else {
+
+							//第四个tab 打开新窗口
+							//plus.webview.open('html/new-webview.html', 'new', {}, 'slide-in-right', 600);
+
+							mui.openWindow({
+								url: 'html/demo1.html',
+								id: 'demo1',
+
+							});
+
+						}
+					});
+
+					//					var height = plus.display.resolutionHeight;
+					//					var minheight = height;
+					//					var ph = height -1;
+					//					document.getElementById("content").setAttribute("style", "min-height:" + minheight + "px;");
+					//					document.getElementById("pullrefresh").setAttribute("style", "height:" + ph + "px;margin-top: 60px;");
+
+					mui('.mui-scroll-wrapper').scroll({
+						scrollY: true, //是否竖向滚动
+						scrollX: true, //是否横向滚动
+						startX: 0, //初始化时滚动至x
+						startY: 0, //初始化时滚动至y
+						indicators: false, //是否显示滚动条
+						//				deceleration: 0.00000001, //阻尼系数,系数越小滑动越灵敏
+						bounce: true //是否启用回弹
+					});
+
+					//					mui.openWindow({
+					//						url: "loginPhoneNumber.html",
+					//						id: 'loginPhoneNumber',
+					//						styles: {
+					//							statusbar: {
+					//								background: '#6b6b83'
+					//							},
+					//							bounce: 'all'
+					//						}
+					//					});
+
+					var first = false;
+					mui.back = function() {
+
+						//首次按键，提示‘再按一次退出应用’
+						if(!first) {
+							first = new Date().getTime();
+							mui.toast('再按一次退出应用');
+							setTimeout(function() {
+								first = null;
+							}, 1500);
+						} else {
+							if(new Date().getTime() - first < 1500) {
+								plus.runtime.quit();
+							}
+						}
+
+						return true;
+					}
+
+					var settings = app.getSettings();
+					settings.autoLogin = true;
+					var state = app.getState();
+
+					if(settings.autoLogin && state.token) {
+						app.loadUserInfo(function(data) {
+							if(!data) {
+								//							plus.webview.currentWebview().hide();
+								//							webview_index.show("slide-in-right", 300);
+								//								plus.webview.currentWebview().close();
+
+							}
+						});
+					} else {
+						mui.openWindow({
+							url: "loginPhoneNumber.html",
+							id: 'loginPhoneNumber',
+							styles: {
+								statusbar: {
+									background: '#6b6b83'
+								}
+
+							}
+						});
+					}
+
+				});
+
+			})();
+		</script>
+	</body>
+
+</html>

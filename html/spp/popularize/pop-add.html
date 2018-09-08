@@ -1,0 +1,796 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../../css/mui.min.css" rel="stylesheet" />
+		<link href="../../../css/mui-ex.css" rel="stylesheet" />
+		<link href="../../../css/iconfont2.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../../../css/mui.picker.min.css" />
+		<link rel="stylesheet" type="text/css" href="../../../css/mui.poppicker.css" />
+		<style type="text/css">
+			.mui-input-group .seo .mui-input-row:after {
+				/*height: 0px;*/
+				/*去掉分割线*/
+			}
+			
+			.mui-input-group .seo .mui-input-row {
+				height: auto;
+			}
+			/*数字输入控件*/
+			
+			.mui-input-row .mui-numbox {
+				margin-left: 0px;
+				width: 160px;
+				float: left;
+			}
+			/*时间选择控件*/
+			
+			.mui-input-row .mui-btn-block {
+				float: left;
+				width: 41%;
+				font-size: 14px;
+				margin-bottom: 0px;
+				margin-top: 1px;
+			}
+			/*栅格*/
+			
+			.mui-row {
+				padding: 6px;
+				margin-bottom: 15px;
+			}
+			
+			.mui-row img {
+				width: 100%;
+				height: auto;
+			}
+			
+			.mui-col-xs-4 {
+				/*padding: 10px 10px 10px 0px;*/
+				height: 100px;
+				overflow: hidden;
+				width: 31.3333%;
+				margin: 1%;
+				position: relative;
+				/*border-radius: 100%;*/
+			}
+			
+			@media (min-width:400px) {
+				.mui-col-xs-4 {
+					height: 120px;
+				}
+			}
+			
+			.delBtn {
+				position: absolute;
+				top: 0;
+				right: 0;
+				/*width: 20px;
+				height: 20px;*/
+				padding: 0px 3px;
+				border-radius: 0px 0px 0px 8px;
+				background-color: rgba(0, 0, 0, 0.5);
+				/*background-color: #222222;*/
+			}
+			
+			.icon-del {
+				color: white;
+			}
+			
+			.icon-tianjiatupian {
+				font-size: 60px;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-top: -20px;
+				margin-left: -30px;
+				color: white;
+			}
+			
+			.iconTxt {
+				font-size: 14px;
+				position: absolute;
+				top: 70%;
+				left: 50%;
+				margin-left: -34px;
+				color: #666;
+			}
+			
+			.cameraicon {
+				background-color: rgba(100, 100, 100, 0.1);
+			}
+			/*end*/
+			
+			.x-title {
+				padding: 10px 10px;
+				font-size: 14px;
+				/*box-shadow: 0 1px 2px rgba(0,0,0,.3);*/
+			}
+			
+			.x-title-icon {
+				float: left;
+				width: 5px;
+				background-color: rgb(237, 184, 6);
+				height: 18px;
+				padding: 10px 0px;
+				margin-right: 10px;
+				border-radius: 20%;
+			}
+			
+			.btn-add {
+				border: none;
+				width: 40%;
+				padding: 10px;
+			}
+			
+			.addAnswer {
+				/*text-align: center;*/
+				margin: 10px;
+				margin-top: 20px;
+				margin-bottom: 20px;
+			}
+			
+			.btn-update {
+				width: 20%;
+				margin: 10px 15px;
+			}
+			
+			.mui-card .mui-table-view {
+				border-bottom: 1px solid #eee;
+				border-radius: 0px;
+			}
+			
+			.eleContent img {
+				width: 100%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id='header'>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">添加问题</h1>
+			<a class="mui-icon iconfont  mui-pull-right" style='font-size: 18px;line-height: 25px;' id='btnComplete'>完成</a>
+		</header>
+		<div class="mui-content" id='content'>
+
+			<div class="mui-card">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell mui-collapse mui-active">
+						<a class="mui-navigate-right" href="#">基本信息</a>
+						<div class="mui-collapse-content">
+							<form class="mui-input-group">
+
+								<div class="mui-input-row" style='display: none;'>
+									<label><span style='color: red;'>*</span>站点</label>
+									<input type="text" v-model.trim='items.siteId'>
+								</div>
+								<div class="mui-input-row" style='display: none;'>
+									<label><span style='color: red;'>*</span>排序号</label>
+									<input type="text" v-model.trim='items.orderNum' placeholder="请输入排序号">
+								</div>
+								<div class="mui-input-row">
+									<label><span style='color: red;'>*</span>分组名称</label>
+									<input type="text" v-model.trim='items.name' placeholder="请输入分组名称" name="v" data-name="rexTitle" @blur="xv($event,'rexTitle','分组名称')">
+								</div>
+								<div class="mui-input-row">
+									<label><span style='color: red;'>*</span>推广页名称</label>
+									<input type="text" v-model.trim='items.title' placeholder="请输入推广页名称" name="v" data-name="rexTitle" @blur="xv($event,'rexTitle','推广页名称')">
+								</div>
+								
+								<div class="mui-input-row">
+									<label><span style='color: red;'>*</span>路径</label>
+									<input type="text" v-model.trim='items.path' placeholder="请输入路径" >
+								</div>
+								
+								<div class="mui-input-row">
+									<label>网址</label>
+									<input type="text" v-model.trim='items.domain' placeholder="请输入网址" name="v" data-name="rexDomain" @blur="xv($event,'rexDomain','网址')">
+								</div>
+								
+								<div class="mui-input-row">
+									<label>备案号</label>
+									<input type="text" v-model.trim='items.icp' placeholder="请输入备案号">
+								</div>
+
+							</form>
+						</div>
+					</li>
+
+				</ul>
+
+			</div>
+
+			<div class='x-title'>
+				<span class='x-title-icon'></span>页面内容
+			</div>
+
+			<div class="mui-card">
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell mui-collapse">
+						<a class="mui-navigate-right" href="#">问题</a>
+						<div class="mui-collapse-content">
+							<form class="mui-input-group">
+
+								<div class="mui-input-row">
+									<label>提问人</label>
+									<input type="text" v-model.trim='items.person' placeholder="请输入提问人" name="v" data-name="rexTitle" @blur="xv($event,'rexTitle','提问人')">
+								</div>
+
+								<div class=" mui-row " id='myCamera'>
+
+									<div class="mui-col-xs-4 cameraicon" id='addAvatar' @tap="showActionSheet(items,'',0)">
+										<span class="iconfont icon-tianjiatupian"></span>
+										<span class="iconTxt">提问人头像</span>
+									</div>
+
+									<div class="mui-col-xs-4" v-if='items.avatar!=""'>
+										<img :src="items.avatar" />
+									</div>
+
+								</div>
+
+								<div class="mui-row">
+									<div id="probar1">
+
+									</div>
+								</div>
+
+								<div class="mui-input-row">
+									<label>提问时间</label>
+									<button data-options='{}' class="btn mui-btn mui-btn-block" @tap='getdate($event)'>{{items.questionDate}} </button>
+								</div>
+								<div class="mui-input-row">
+									<label>回答数目</label>
+									<div class="mui-numbox" id='answerNum' data-numbox-min='1' data-numbox-max='999'>
+										<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+										<input id="test" class="mui-input-numbox" type="number" />
+										<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+									</div>
+								</div>
+								<div class="mui-input-row">
+									<label>评论数目</label>
+									<div class="mui-numbox" id='commentNum' data-numbox-min='1' data-numbox-max='999'>
+										<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+										<input class="mui-input-numbox" type="number" />
+										<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+									</div>
+								</div>
+								<div class="mui-input-row">
+									<label>查看数目</label>
+									<div class="mui-numbox" id='viewNum' data-numbox-min='1' data-numbox-max='999'>
+										<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+										<input class="mui-input-numbox" type="number" />
+										<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
+									</div>
+								</div>
+
+								<div class="seo">
+									<div class="mui-input-row">
+										<label><span style='color: red;'>*</span>问题名称：</label>
+										<!--<input type="text" v-model.trim='items.question' placeholder="请输入问题名称" name="v" data-name="rexTitle" @blur="getTitle($event,items.question)">-->
+										<div>
+											<textarea v-model.trim='items.question' rows="4" cols="" placeholder="请输入问题名称" name="v" data-name="rexTitle" @blur="getTitle($event,items.question)"></textarea>
+										</div>
+
+									</div>
+
+									<div class="mui-input-row">
+										<label><span style='color: red;'>*</span>问题内容:</label>
+										<div style='clear: both;'></div>
+										<a @tap='openWeb($event)' id='eleContent' name='questionContent' class='eleContent' style="display: block; height: 300px;overflow:scroll;padding: 15px;color: #ccc;">
+
+											{{items.questionContent}}
+
+										</a>
+									</div>
+
+									<!--<div>
+										<textarea name="" rows="4" cols="" placeholder="请输入问题内容" v-model.trim='items.questionContent' name="v" data-name="rexContent" @blur="xv($event,'rexContent','问题内容')"></textarea>
+									</div>-->
+
+									<div class="mui-input-row">
+										<label><span style='color: red;'>*</span>SEO标题:</label>
+										<div>
+											<textarea v-model.trim='items.seoTitle' rows="4" cols="" placeholder="请输入SEO标题" name="v" data-name="rexSeo" @blur="xv($event,'rexSeo','SEO标题')"></textarea>
+										</div>
+									</div>
+
+									<div class="mui-input-row">
+										<label><span style='color: red;'>*</span>SEO关键字:</label>
+										<div>
+											<textarea v-model.trim='items.seoKeywords' rows="4" cols="" placeholder="请输入SEO关键字" name="v" data-name="rexSeo" @blur="xv($event,'rexSeo','SEO关键字')"></textarea>
+										</div>
+									</div>
+
+									<div class="mui-input-row">
+										<label><span style='color: red;'>*</span>SEO描述:</label>
+										<div>
+											<textarea v-model.trim='items.seoDescription' rows="4" cols="" placeholder="请输入SEO描述" name="v" data-name="rexSeo" @blur="xv($event,'rexSeo','SEO描述')"></textarea>
+										</div>
+									</div>
+
+								</div>
+
+							</form>
+
+						</div>
+					</li>
+
+				</ul>
+
+			</div>
+
+		</div>
+		<script src="../../../js/immersed.js"></script>
+		<script src="../../../js/mui.min.js"></script>
+		<script src="../../../js/vue.min.js"></script>
+		<script src="../../../js/myApp.js"></script>
+		<script src="../../../js/x-validate.js"></script>
+		<script src="../../../js/choosePic.js"></script>
+		<script src="../../../js/myutil.js"></script>
+		<script src="../../../js/mui.picker.min.js"></script>
+		<script src="../../../js/mui.poppicker.js"></script>
+		<script type="text/javascript">
+			mui.init();
+
+			var vm = new Vue({
+				el: '#content',
+				data: {
+					items: {
+						siteId: '',
+						orderNum: '',
+						name: '[CTS]贵州-黄果树瀑布', //推广页分组名称
+						title: '去贵州旅游有哪些好玩的景点', //推广页名称
+						domain: 'ceshi.com', //域名网址
+						path:'',
+						
+						template:'',
+						templateFileId:'',
+
+						question: '准备去贵州玩，有哪些好玩的景点推荐？', //问题标题
+						questionContent: '点击编辑问题的内容', //问题内容
+						seoTitle: '',
+						seoKeywords: '',
+						seoDescription: '',
+
+						person: '李四', //提问人
+						avatar: '', //头像
+						questionDate: '提问时间', //提问时间
+						answerNum: '', //回答数目
+						commentNum: '', //评论数目
+						viewNum: '', //查看数目
+						icp: ''
+					},
+
+				}
+			});
+
+			//			var web_content = null;
+			//打开预加载内容页
+			function openWeb(event) {
+				var obj = event.target;
+
+				if(obj.tagName != 'A') {
+					obj = obj.parentNode;
+				}
+
+				//获取类型，是回答内容还是评论内容
+				var typeContent = obj.getAttribute('name');
+				console.log(" typeContent :" + typeContent)
+				//获取下标
+
+				var a_index = obj.getAttribute('a-index');
+				console.log(" a_index :" + a_index)
+
+				var c_index = obj.getAttribute('c-index');
+				console.log(" c_index :" + c_index)
+
+				//				if(obj.children[0]!=undefined){
+				//					obj=obj.parentNode;
+				//					console.log("obj.tagname111:"+obj.tagName);
+				//				}
+
+				//				console.log("obj.tagname:"+obj.tagName);
+				//				console.log("obj.innerHTML:"+obj.innerHTML);	
+
+				var objId = obj.getAttribute('id');
+				console.log("objId:" + objId);
+
+				mui.openWindow({
+					url: 'content.html',
+					id: 'pop-content',
+					extras: {
+						type: 2,
+						objId: objId,
+						content: obj.innerHTML,
+
+						typeContent: typeContent,
+						a_index: a_index,
+						c_index: c_index
+					}
+				});
+
+				//触发子窗口变更新闻详情
+				//				mui.fire(web_content, 'get_detail', {
+				//					objId: objId,
+				//					content: obj.innerHTML,
+				//
+				//					typeContent: typeContent,
+				//					a_index: a_index,
+				//					c_index: c_index
+				//
+				//				});
+				//
+				//				setTimeout(function() {
+				//					web_content.show("slide-in-right", 300);
+				//				}, 150)
+
+			}
+
+			//自定义事件
+			window.addEventListener("refreshws", function(event) {
+				//获得事件参数
+				var content = event.detail.content;
+				var eid = event.detail.objId;
+
+				var typeContent = event.detail.typeContent;
+				var a_index = event.detail.a_index;
+				var c_index = event.detail.c_index;
+
+				console.log(" typeContent :" + typeContent)
+				console.log(" a_index :" + a_index)
+				console.log(" c_index :" + c_index)
+				console.log(" eid :" + eid)
+
+				if(util.strtrim(content) == '' || content == undefined || content == null) {
+					content = '点击编辑内容'
+				}
+
+				if(typeContent == 'questionContent') {
+					vm.items.questionContent = content //问题的内容
+				}
+				if(typeContent == 'answerContent') {
+					vm.answers[a_index].content = content //回答的内容
+				}
+				if(typeContent == 'commentContent') {
+					vm.answers[a_index].commentJson[c_index].content = content //回答的评论的内容
+				}
+
+				document.getElementById(eid).innerHTML = content; //显示效果而不是源码
+				getSeo(util.repalceHtml(content));
+			});
+
+			//提交
+			document.getElementById("btnComplete").addEventListener('tap', function() {
+//				console.log("vm.items" + JSON.stringify(vm.items));
+				
+				if(vm.items.path==''){
+					mui.toast('请输入路径');
+					return;
+				}
+
+				//mui数字输入控件，v-model绑定无效，手动绑定				
+				vm.items.answerNum = mui('#answerNum').numbox().getValue();
+				vm.items.commentNum = mui('#commentNum').numbox().getValue();
+				vm.items.viewNum = mui('#viewNum').numbox().getValue();
+
+				//验证输入格式
+				var objs = document.getElementsByName("v");
+				var flag = true;
+				//遍历需要验证的元素
+				for(var i = 0; i < objs.length; i++) {
+
+					var e = {};
+					var dname;
+
+					e.target = objs[i];
+
+					dname = objs[i].getAttribute('data-name');
+
+					if(!xv(e, dname)) {
+						console.log("dname:" + dname);
+						flag = false;
+						return;
+					}
+				}
+
+				if(flag) {
+
+					complateAdd();
+
+				}
+			});
+
+			mui.plusReady(function() {
+
+				var wv = plus.webview.currentWebview();
+				//				wv.setStyle({
+				//					titleNView: { // 窗口的标题栏控件
+				//						titleText: "添加问题", // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+				//						titleColor: "#FFFFFF", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+				//						titleSize: "17px", // 字体大小,默认17px
+				//						backgroundColor: "#FAC850", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+				//						autoBackButton: true,
+				//						buttons: [{
+				//							fontSrc: '../../../fonts/iconfont.ttf',
+				//							text: '\ue634',
+				//							float: 'right',
+				//							color: 'white',
+				//							colorPressed: "#CF2D28",
+				//							fontSize: '16px',
+				//							onclick: addQue
+				//						}],
+				//					}
+				//				});
+				//获取当前站点
+				vm.items.siteId = app.getSiteInfo().id;
+
+				//h获取问题排序号
+				app.qasOrderNum(function(data) {
+					vm.items.orderNum = data;
+				});
+
+				//预加载详情页面
+				//				web_content = mui.preload({
+				//					url: 'content.html',
+				//					id: 'content'
+				//				});
+
+				ws = plus.webview.currentWebview();
+
+				ws.setStyle({
+					popGesture: 'none' //开启侧滑关闭功能
+				});
+
+				//重写返回逻辑
+				//				mui.back = function() {
+				//					plus.webview.currentWebview().hide("auto", 300);
+				//				}
+
+			});
+
+			//备份mui.back，mui.back已将窗口关闭逻辑封装的比较完善（预加载及父子窗口），因此最好复用mui.back
+			var old_back = mui.back;
+			mui.back = function() {
+				var btn = ["确定", "取消"];
+				mui.confirm('关闭窗口将不会保存数据？', '添加尚未保存', btn, function(e) {
+					if(e.index == 0) {
+						//执行mui封装好的窗口关闭逻辑；
+						old_back();
+					}
+				});
+			}
+
+			/*
+			 * 自动生成seo描述,关键词
+			 */
+			function getSeo(content) {
+				vm.items.seoDescription = '';
+				vm.items.seoKeywords = '';
+				app.extractSummary(content, 10, function(data) {
+					for(var i = 0; i < data.length; i++) {
+						vm.items.seoDescription += data[i] + ",";
+					}
+				});
+				app.extractKeyword(content, 10, function(data) {
+					for(var i = 0; i < data.length; i++) {
+						vm.items.seoKeywords += data[i] + ",";
+					}
+				});
+			}
+
+			function getTitle(event, title) {
+				vm.items.seoTitle = '';
+				if(xv(event, 'rexTitle', '问题名称')) {
+					vm.items.seoTitle = title;
+				}
+			}
+
+			function getdate(event) {
+				util.getdate(event);
+			}
+
+			//			function showActionSheet(event, maximum) {
+			//
+			//				choosePic.showActionSheet(event, maximum);
+			//
+			//			}
+
+			//
+			function complateAdd() {
+				console.log("items:" + JSON.stringify(vm.items))
+				//提交问题
+				app.qasAdd(vm.items, function(data) {
+					//获得列表界面的webview
+					var list = plus.webview.getWebviewById('pop-list');
+					//触发列表界面的自定义事件（reload）,从而进行数据刷新
+					mui.fire(list, 'reload');
+					old_back();
+
+				});
+
+			}
+
+			//-------------------------------------------
+
+			function showActionSheet(item, index, type) {
+
+				var bts = [{
+					title: "相册"
+				}, {
+					title: "拍照"
+				}];
+				plus.nativeUI.actionSheet({
+						cancel: "取消",
+						buttons: bts
+					},
+					function(e) {
+						//打开相册
+						if(e.index == 1) {
+							galleryImgsSelected(item, index, type);
+						}
+						//打开拍照
+						if(e.index == 2) {
+							getImage(item, index, type);
+						}
+					}
+				);
+			}
+
+			/*小数转百分数*/
+			/*Number()数据类型转换，指定截取转换后的小数点后几位(四舍五入)*/
+			function toPercent(point) {
+				var str = Number(point * 100).toFixed(1);
+				str += "%";
+				return str;
+			}
+
+			/*百分数转小数*/
+			function toPoint(percent) {
+				var str = percent.replace("%", "");
+				str = str / 100;
+				return str;
+			}
+
+			function loadImage(url, callback) {
+				app.log("加载的图片路径是：" + url);
+				var img = new Image();
+				img.onload = function() {
+					img.onload = null;
+					callback(img);
+					//					return img;
+				}
+				img.src = url;
+			}
+
+			//获取图片宽度，的得到缩放百分比
+			function getImgPercent(img) {
+				var p;
+				console.log('width:' + img.width + ',height:' + img.height);
+				if(img.width > 200) {
+					var c = 200 / img.width;
+					p = toPercent(c);
+				} else {
+					p = "100%";
+				}
+				return p;
+			}
+
+			//图片压缩
+			function compressImage(img, p, callback) {
+
+				plus.zip.compressImage({
+					src: img.src,
+					dst: "_doc/gallery/" + img.src,
+					quality: 20,
+					width: p,
+					overwrite: true
+				}, function(e) {
+					//					console.log("e.target:" + e.target);
+					//					for(var i in e){
+					//						console.log(i+"---"+e[i]);
+					//					}
+					return callback(e.target);
+				}, function(err) {
+					console.error("压缩失败：" + err.message);
+				});
+			}
+
+			//从相册获取图片
+			function galleryImgsSelected(item, index, type) {
+				plus.gallery.pick(function(e) {
+
+						loadImage(e.files[0], function(img) {
+							console.log("img:" + img.width);
+							//获取百分比
+							var p = getImgPercent(img);
+							console.log("p:" + p)
+							//压缩图片
+							compressImage(img, p, function(url) {
+								var id = '';
+								if(type == 1) {
+									id = "#anProbar" + index;
+								} else if(type == 2) {
+									id = "#ctProbar" + index;
+								} else if(type == 0) {
+									id = "#probar1";
+								}
+								console.log("url:" + url)
+								mui(id).progressbar().show();
+								app.singleUpload(url, function(data) {
+									item.avatar = data;
+									mui(id).progressbar().hide();
+								});
+
+							})
+
+						});
+
+					},
+					function(e) {
+						console.log('取消选择图片');
+					}, {
+						filter: 'none',
+						multiple: true,
+						maximum: 1,
+						selected: null, //lfs 则会记住上次的选择，null 则不会记住上次的选择
+						system: false,
+						onmaxed: function() {
+							plus.nativeUI.alert("最多只能选择" + 1 + "张图片");
+						}
+					}); // 最多选择maximum张图片
+			}
+
+			//拍照获取图片
+			function getImage(item, index, type) {
+				var cmr = plus.camera.getCamera();
+				cmr.captureImage(function(p) {
+					app.log('成功：' + p);
+					plus.io.resolveLocalFileSystemURL(p, function(entry) {
+
+						loadImage(entry.toLocalURL(), function(img) {
+							console.log("img:" + img.width);
+							//获取百分比
+							var p = getImgPercent(img);
+							console.log("p:" + p)
+							//压缩图片
+							compressImage(img, p, function(url) {
+								var id = '';
+								if(type == 1) {
+									id = "#anProbar" + index;
+								} else if(type == 2) {
+									id = "#ctProbar" + index;
+								} else if(type == 0) {
+									id = "#probar1";
+								}
+								console.log("url:" + url)
+								mui(id).progressbar().show();
+								app.singleUpload(url, function(data) {
+									item.avatar = data;
+									mui(id).progressbar().hide();
+								});
+
+							})
+
+						});
+
+					}, function(e) {
+						app.log('读取拍照文件错误：' + e.message);
+					});
+				}, function(e) {
+					app.log('失败：' + e.message);
+				}, {
+					filename: '_doc/camera/',
+					index: 1
+				});
+			}
+
+			//----------------------------------------------
+		</script>
+
+	</body>
+
+</html>

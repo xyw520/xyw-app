@@ -1,0 +1,221 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/mui-ex.css" rel="stylesheet" />
+		<script src="../js/autosize.js"></script>
+		<style type="text/css">
+			input.x-input {
+				border: none;
+				border-bottom: 1px solid #ccc;
+			}
+			
+			.mui-content {
+				background-color: white;
+			}
+			
+			.mui-scroll {
+				background-color: white;
+				padding: 15px;
+			}
+			
+			.edit-text {
+				/*min-height: 0.45rem;
+				font-size: 0.16rem;*/
+				color: #2e2e2e;
+				/*line-height: 0.25rem;*/
+				outline: none;
+				-webkit-user-select: text;
+				padding: 5px;
+			}
+			
+			.inputValue {
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id='header'>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">修改分类</h1>
+			<!--<a id='btnComplete'>完成</a>-->
+			<a class="mui-icon iconfont  mui-pull-right" style='font-size: 18px;line-height: 25px;'  id='btnComplete'>完成</a>
+		</header>
+		<div class="mui-content">
+			<div class="mui-scroll-wrapper" id='con-wrap' style='margin-top: 55px;'>
+				<div class="mui-scroll" id='content'>
+
+					<p>排序号：</p>
+					<div>
+						<input type="text" class="x-input" id='orderNum' placeholder="请输入排序号" v-model.trim='orderNum' name='v' data-name='rexNum' @blur="xv($event,'rexNum')" />
+					</div>
+					<p>分类名称：</p>
+					<div>
+						<input type="text" class="x-input" id="name" placeholder="请输入分类名称" v-model.trim='name' name="v" data-name="rexTitle" @blur="xv($event,'rexTitle','分类名称')" />
+					</div>
+					<p>目录：</p>
+					<div>
+						<input type="text" class="x-input" id="dir" placeholder="请输入目录" name="v" v-model.trim='dir' data-name="rexDir" @blur="spcDirUsed($event,dir,dirOld)" @keyup="clearTxt()" />
+					</div>
+					<p id='dirInfo'></p>
+					<p>备注：</p>
+					<!--<input type="text" class="x-input" id="seoTitle" value='sssss' />-->
+					<textarea id="note" v-model.trim='note'></textarea>
+				</div>
+			</div>
+		</div>
+		<script src="../js/immersed.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/myApp.js"></script>
+		<script src="../js/vue.min.js"></script>
+		<script src="../js/x-validate.js"></script>
+		<script type="text/javascript">
+			mui.init();
+
+			var spcInfo = {
+				id:'',
+				siteId: '',
+				dir: '',
+				dirOld: '',
+				name: '',
+				note: '',
+				orderNum: '',
+				
+				flag: true
+			}
+
+			var vm = new Vue({
+				el: '#content',
+				data: spcInfo
+			});
+			
+			//获取站点
+			if(app.getSiteInfo().id) {
+				vm.siteId = app.getSiteInfo().id;
+				console.log("vm.siteId :"+vm.siteId )
+			} else {
+				mui.toast('获取站点失败，可能账号已经过期，请重新登录');
+			}
+
+//			vm.siteId = app.getSiteInfo().id;
+//			console.log("siteId:" + vm.siteId)
+			
+			//自定义监听事件  
+			document.addEventListener('get_updateDetail', function(e) {
+//				console.log("app.getSiteInfo().id;"+app.getSiteInfo().id;)
+				var id = event.detail.id;
+				if(!id) {
+					return;
+				}
+				//前页传入的数据直接渲染
+				vm.orderNum = e.detail.orderNum;
+				vm.dir = e.detail.dir;
+				vm.dirOld = e.detail.dir;
+				vm.note = e.detail.note;
+				vm.name = e.detail.name;
+				vm.id = e.detail.id;
+				vm.degInfo = '';
+				vm.sefInfo = '';
+			});
+
+			//备份mui.back，mui.back已将窗口关闭逻辑封装的比较完善（预加载及父子窗口），因此最好复用mui.back
+			var old_back = mui.back;
+			mui.back = function() {
+				var btn = ["确定", "取消"];
+				mui.confirm('确认关闭当前窗口？', '添加尚未完成', btn, function(e) {
+					if(e.index == 0) {
+						//执行mui封装好的窗口关闭逻辑；
+						old_back();
+					}
+				});
+			}
+
+			//完成按钮
+			document.getElementById("btnComplete").addEventListener('tap', function() {
+
+				//检查目录
+				if(!vm.flag){
+					mui.toast("路径已经被占用，请检查路径");
+					return false;
+				}
+
+				//验证输入格式
+				var objs = document.getElementsByName("v");
+				var flag = true;
+				//遍历需要验证的元素
+				for(var i = 0; i < objs.length; i++) {
+
+					var e = {};
+					var dname;
+
+					e.target = objs[i];
+
+					dname = objs[i].getAttribute('data-name');
+
+					if(!xv(e, dname)) {
+						console.log("dname:" + dname);
+						flag = false;
+						return;
+					}
+
+				}
+
+				if(flag) {
+					app.spcUpdate(spcInfo, function(data) {
+						if(data) {
+							mui.toast('修改成功');
+							//获得列表界面的webview
+							var list = plus.webview.getWebviewById('spc-list');
+							//触发列表界面的自定义事件（refresh）,从而进行数据刷新
+							mui.fire(list, 'reload');
+							//返回true，继续页面关闭逻辑
+							old_back();
+						}
+					});
+				}
+
+			});
+
+			//检测目录是否被占用
+			function spcDirUsed(event, dir,dirOld) {
+
+				//先判断格式，格式没有问题再进行联网验证
+				if(xv(event, 'rexDir')) {
+					app.spcUpDirUsed(dir,dirOld, function(data) {
+						if(data == true) {
+							document.getElementById("dirInfo").innerHTML = '<span style="color:green"> 提示：目录可以使用 </span>';
+							vm.flag = true;
+						} else {
+							document.getElementById("dirInfo").innerHTML = '<span style="color:red"> 提示：目录已被占用，请重填 </span>';
+							vm.flag = false;
+						}
+					})
+				}
+
+			}
+
+			//清楚提示信息
+			function clearTxt() {
+				document.getElementById("dirInfo").innerHTML = '';
+			}
+
+			autosize(document.querySelectorAll('textarea'));
+
+			mui('.mui-scroll-wrapper').scroll({
+				scrollY: true, //是否竖向滚动
+				scrollX: true, //是否横向滚动
+				startX: 0, //初始化时滚动至x
+				startY: 0, //初始化时滚动至y
+				indicators: true, //是否显示滚动条
+				//deceleration: 0.00000001, //阻尼系数,系数越小滑动越灵敏
+				bounce: true //是否启用回弹
+			});
+		</script>
+	</body>
+
+</html>

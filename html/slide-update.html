@@ -1,0 +1,556 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/mui-ex.css" rel="stylesheet" />
+		<link href="../css/iconfont.css" rel="stylesheet" />
+		<style type="text/css">
+			li {
+				list-style: none;
+			}
+			/*栅格*/
+			
+			.mui-row {
+				padding: 6px;
+				margin-bottom: 15px;
+			}
+			 
+			.mui-row img {
+				width: 100%;
+				height: auto;
+			}
+			
+			.mui-col-xs-4 {
+				/*padding: 10px 10px 10px 0px;*/
+				height: 100px;
+				overflow: hidden;
+				width: 31.3333%;
+				margin: 1%;
+				position: relative;
+			}
+			
+			@media (min-width:400px) {
+				.mui-col-xs-4 {
+					height: 120px;
+				}
+			}
+			
+			.delBtn {
+				position: absolute;
+				top: 0;
+				right: 0;
+				/*width: 20px;
+				height: 20px;*/
+				padding: 0px 3px;
+				border-radius: 0px 0px 0px 8px;
+				background-color: rgba(0, 0, 0, 0.5);
+				/*background-color: #222222;*/
+			}
+			
+			.icon-del {
+				color: white;
+			}
+			
+			.icon-xiangji {
+				font-size: 40px;
+				position: absolute;
+				top: 50%;
+				left: 50%;
+				margin-top: -20px;
+				margin-left: -25px;
+				color: white;
+			}
+			
+			.iconTxt {
+				font-size: 16px;
+				position: absolute;
+				top: 70%;
+				left: 50%;
+				margin-left: -31px;
+				color: #666;
+			}
+			
+			.cameraicon {
+				background-color: rgba(100, 100, 100, 0.1);
+			}
+			/*end*/
+			
+			.addOption {
+				width: 100%;
+				margin: 0 auto;
+				/*background-color: #61affe;
+				color: white;*/
+				border: none;
+				padding: 10px;
+				font-size: 18px;
+				margin-bottom: 60px;
+				/*background-color: #77b4f2;*/
+				background: linear-gradient(to right, #ffe259, #ffa751);
+				color: white;
+				margin-top: 20px;
+			}
+			
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id='header'>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" id='slidetitle'>修改幻灯片</h1>
+			<!--<a id='btnComplete'>完成</a>-->
+			<a class="mui-icon iconfont  mui-pull-right" style='font-size: 18px;line-height: 25px;'  id='btnComplete'>完成</a>
+		</header>
+		<div class="mui-content" id='content'>
+			<div class='mui-card'>
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell mui-collapse mui-active">
+						<a class="mui-navigate-right" href="#">幻灯片基本信息</a>
+						<div class="mui-collapse-content">
+							<form class="mui-input-group">
+								<div class="mui-input-row">
+									<label>类型</label>
+									<select name="" v-model="items.type">
+										<!--<option disabled value="">请选择</option>-->
+										<option value="0">通用</option>
+										<option value="1">pc端</option>
+										<option value="2">wap端</option>
+									</select>
+								</div>
+								<!--<div class="mui-input-row">
+									<label>站点id</label>
+									<input type="text" id="content" v-model.trim='siteId' placeholder="输入排序号" name='v' data-name='rexNum' @blur="xv($event,'rexNum','排序号')" />
+								</div>-->
+								<div class="mui-input-row">
+									<label>排序号</label>
+									<input type="text" id="content" v-model.trim='items.orderNum' placeholder="输入排序号" name='v' data-name='rexNum' @blur="xv($event,'rexNum','排序号')" />
+								</div>
+								<div class="mui-input-row">
+									<label>名称</label>
+									<input type="text" id="content" v-model.trim='items.name' placeholder="请输入名称" name='v' data-name='rexTitle' @blur="xv($event,'rexTitle','名称','false')" />
+								</div>
+
+								<div class="mui-input-row">
+									<label>描述</label>
+								</div>
+								<div>
+									<textarea id="content" v-model.trim='items.note' rows="5" placeholder="请输入描述" name='v' data-name='rexLess255' @blur="xv($event,'rexLess255','描述','false')"></textarea>
+								</div>
+
+							</form>
+						</div>
+					</li>
+				</ul>
+			</div>
+
+			<div class='mui-card' v-for='(item,i) in items.listSlideData'>
+				<ul class="mui-table-view">
+					<li class="mui-table-view-cell mui-collapse mui-active">
+						<a class="mui-navigate-right" href="#">幻灯片详细信息</a>
+						<div class="mui-collapse-content">
+							<form class="mui-input-group">
+								<div class="mui-input-row">
+									<label>排序号</label>
+									<input type="text" id="content" v-model.trim='item.orderNum' placeholder="输入排序号" name='v' data-name='rexNum' @blur="xv($event,'rexNum','排序号')" />
+								</div>
+								<div class="mui-input-row">
+									<label>标题</label>
+									<input type="text" id="content" v-model.trim='item.title' placeholder="输入标题" name='v' data-name='rexTitle' @blur="xv($event,'rexTitle','名称','false')" />
+								</div>
+
+								<div class="mui-input-row">
+									<label>URL链接</label>
+									<input type="text" id="content" v-model.trim='item.url' placeholder="输入URL链接" name='v' data-name='rexTitle' @blur="xv($event,'rexTitle','URL链接','false')" />
+								</div>
+
+								<div class="mui-input-row">
+									<label>图片</label>
+								</div>
+
+								<div class="mui-row " id='myCamera'>
+									<div class="mui-col-xs-4 cameraicon" @tap="showActionSheet(i,1)">
+										<span class="iconfont icon-xiangji"></span>
+										<span class="iconTxt">添加图片</span>
+									</div>
+
+									<div class="mui-col-xs-4" @tap='showDelPre($event,i,1)' v-if='item.imgUrl!=""'>
+										<img :src="item.imgUrl" />
+									</div>
+
+								</div>
+								
+								<div class="mui-row">
+									<div :id="'demo1'+i" >
+										
+									</div>
+								</div>
+
+								<div class="mui-input-row">
+									<label>缩略图片</label>
+								</div>
+
+								<div class="mui-row " id='myCamera2'>
+									<div class="mui-col-xs-4 cameraicon" @tap="showActionSheet(i,2)">
+										<span class="iconfont icon-xiangji"></span>
+										<span class="iconTxt">添加图片</span>
+									</div>
+
+									<div class="mui-col-xs-4" @tap='showDelPre($event,i,2)' v-if='item.imgUrlSmall!=""'>
+										<img :src="item.imgUrlSmall" />
+									</div>
+
+								</div>
+								
+								<div class="mui-row">
+									<div :id="'demo2'+i" >
+										
+									</div>
+								</div>
+
+								<div class="mui-input-row">
+									<label>描述</label>
+								</div>
+								<div>
+									<textarea id="content" rows='5' v-model.trim='item.description' placeholder="输入描述" name='v' data-name='rexLess255' @blur="xv($event,'rexLess255','描述','false')"></textarea>
+								</div>
+								<div class="mui-input-row" style='height: 80px;'>
+									<div class="mui-col-sm-12 mui-col-xs-12">
+										<li class="mui-table-view-cell">
+											<button type="button" id='' class='addOption' style="background: linear-gradient(to right, #C9D6FF, #E2E2E2);color:#777" @tap='delRow(item)'>删除此详细信息</button>
+										</li>
+									</div>
+								</div>
+							</form>
+						</div>
+					</li>
+				</ul>
+			</div>
+
+			<div class="mui-row" id='btn'>
+				<div class="mui-col-sm-12 mui-col-xs-12">
+					<li class="mui-table-view-cell">
+						<button type="button" id='p_btn' class='addOption' @tap='addRow()'>添加详细信息</button>
+					</li>
+				</div>
+			</div>
+
+		</div>
+		<script src="../js/immersed.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/myApp.js"></script>
+		<script src="../js/myutil.js"></script>
+		<script src="../js/x-validate.js"></script>
+		<script src="../js/vue.min.js"></script>
+
+		<script type="text/javascript">
+			mui.init({
+				gestureConfig: {
+					longtap: true, //默认为false	
+					release: true, //默认为false，不监听
+					hold: true,
+				},
+			});
+
+//						var items = {
+//							id:'',
+//							"listSlideData": [{ 
+//								"description": "",
+//								"imgUrl": '',
+//								"imgUrlSmall": '',
+//								"orderNum": 1,
+//								"title": "",
+//								"url": ""
+//							}],
+//							"name": "",
+//							"note": "",
+//							"orderNum": '',
+//							"siteId": '',
+//							"type": 0
+//						}
+
+			var vm = new Vue({
+				el: '#content',
+				data: {
+					items: {
+						id:'',
+							"listSlideData": [{ 
+								"description": "",
+								"imgUrl": '',
+								"imgUrlSmall": '',
+								"orderNum": 1,
+								"title": "",
+								"url": ""
+							}],
+							"name": "",
+							"note": "",
+							"orderNum": '',
+							"siteId": '',
+							"type": 0
+					},
+					id: '',
+					type: ''
+				}
+			});
+
+			vm.siteId = app.getSiteInfo().id;
+			var old_back;
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview();
+				vm.id = self.slideId;
+				vm.type = self.type;
+				self.setStyle({
+					'popGesture': 'close'
+				});
+				plus.screen.lockOrientation("portrait-primary"); //仅支持竖屏显示 
+
+				app.getSlideById(vm.id, function(data) {
+					vm.items = data;
+					if(vm.items.listSlideData==null){
+						vm.items.listSlideData=[];
+					}
+					
+
+				});
+
+				if(vm.type == 1) {
+					document.getElementById("btnComplete").setAttribute('style', "display: none;");
+					document.getElementById("slidetitle").innerHTML='幻灯片详情'
+				} else {
+					//备份mui.back，mui.back已将窗口关闭逻辑封装的比较完善（预加载及父子窗口），因此最好复用mui.back
+					 old_back= mui.back;
+					mui.back = function() {
+						var btn = ["确定", "取消"];
+						mui.confirm('确认关闭当前窗口？', '修改尚未确定', btn, function(e) {
+							if(e.index == 0) {
+								//执行mui封装好的窗口关闭逻辑；
+								old_back();
+							}
+						});
+					}
+
+				}
+
+			});
+
+			document.getElementById("btnComplete").addEventListener('tap', function() {
+
+				//验证输入格式
+
+				var objs = document.getElementsByName("v");
+				var flag = true;
+
+				//遍历需要验证的元素
+				for(var i = 0; i < objs.length; i++) {
+
+					var e = {};
+					var dname;
+
+					e.target = objs[i];
+
+					dname = objs[i].getAttribute('data-name');
+
+					if(objs[i].placeholder == '输入排序号') {
+						if(!xv(e, dname, '', 'true')) {
+							console.log("dname:" + dname);
+							flag = false;
+						}
+					} else {
+						if(!xv(e, dname, '', 'false')) {
+							console.log("dname:" + dname);
+							flag = false;
+						}
+					}
+
+				}
+
+				if(flag) {
+					slideUpdate();
+				}
+
+			});
+
+			function slideUpdate() {
+
+				console.log("vm.items:" + JSON.stringify(vm.items));
+
+				app.slideUpdate(vm.items, function(data) {
+					
+					var list=plus.webview.getWebviewById('slide-list');
+					mui.fire(list,'refresh');
+					
+					old_back();
+				});
+				
+			}
+
+			function loadImage(url, callback) {
+				var img = new Image();
+				img.onload = function() {
+					img.onload = null;
+					callback(img);
+				}
+				img.src = url;
+			}
+
+			function showDelPre(event, index, flag) {
+				var bts = [{
+					title: "删除"
+				}];
+				plus.nativeUI.actionSheet({
+						cancel: "取消",
+						buttons: bts
+					},
+					function(e) {
+						//删除
+						if(e.index == 1) {
+							delPic(event, index, flag);
+						}
+
+					}
+				);
+			}
+
+			//删除图片
+			function delPic(event, index, flag) {
+				var btn = ["确定", "取消"];
+				mui.confirm('确认删除？', '删除后将不可恢复', btn, function(e) {
+					if(e.index == 0) {
+						
+						if(flag == 1) {
+							app.imgDel(vm.listSlideData[index].imgUrl, function(data) {
+								vm.listSlideData[index].imgUrl = ''; //给图片路径赋值为空后，根据vue双向绑定特性，应该会“删掉”图片，但是没有。用了v-if做判断，；才有了“删除”效果
+							});
+
+						} else if(flag == 2) {
+							app.imgDel(vm.listSlideData[index].imgUrlSmall, function(data) {
+								vm.listSlideData[index].imgUrlSmall = ''; //给图片路径赋值为空后，根据vue双向绑定特性，应该会“删掉”图片，但是没有。用了v-if做判断，；才有了“删除”效果
+							});
+						}
+						
+					}
+				});
+			}
+
+			function showActionSheet(index, flag) {
+				var bts = [{
+						title: "相册"
+				},
+				{
+						title: "拍照"
+					}
+					
+				];
+				plus.nativeUI.actionSheet({
+						cancel: "取消",
+						buttons: bts
+					},
+					function(e) {
+						//打开相册
+						if(e.index == 1) {
+							console.log("index:"+index);
+							galleryImgsSelected(index, flag);
+						}
+						//打开拍照
+						if(e.index == 2) {
+							getImage(index, flag);
+						}
+					}
+				);
+			}
+			
+			function getImage(index, flag) {
+				var cmr = plus.camera.getCamera();
+				cmr.captureImage(function(p) {
+					app.log('成功：' + p);
+					plus.io.resolveLocalFileSystemURL(p, function(entry) {
+						//						for(var item in entry) {
+						//							app.log(item + "==" + entry[item]);
+						////							name fullPath
+						//						}
+						if(flag == 1) {
+							mui("#demo1"+index).progressbar().show();  
+							app.singleUpload(entry.toLocalURL(), function(data) {
+								vm.items.listSlideData[index].imgUrl = data
+								mui("#demo1"+index).progressbar().hide(); 
+							});
+						} else if(flag == 2) {
+							mui("#demo2"+index).progressbar().show();  
+							app.singleUpload(entry.toLocalURL(), function(data) {
+								vm.items.listSlideData[index].imgUrlSmall = data
+								mui("#demo2"+index).progressbar().hide(); 
+							});
+						}
+					}, function(e) {
+						app.log('读取拍照文件错误：' + e.message);
+					});
+				}, function(e) {
+					app.log('失败：' + e.message);
+				}, {
+					filename: '_doc/camera/',
+					index: 1
+				});
+			}
+
+			function galleryImgsSelected(index, flag) {
+				console.log("index:" + index);
+				plus.gallery.pick(function(e) {
+						if(flag == 1) {
+							mui("#demo1"+index).progressbar().show();  
+							app.singleUpload(e.files[0], function(data) {
+								console.log("index2222:" + index);  
+								vm.items.listSlideData[index].imgUrl = data;
+								mui("#demo1"+index).progressbar().hide(); 
+							});
+						} else if(flag == 2) {
+							mui("#demo2"+index).progressbar().show();  
+							app.singleUpload(e.files[0], function(data) {
+								vm.items.listSlideData[index].imgUrlSmall = data
+								mui("#demo2"+index).progressbar().hide(); 
+							});
+						}
+
+					},
+					function(e) {
+						console.log('取消选择图片');
+					}, {
+						filter: 'none',
+						multiple: true,
+						maximum: 1,
+						selected: null, //lfs 则会记住上次的选择，null 则不会记住上次的选择
+						system: false,
+						onmaxed: function() {
+							plus.nativeUI.alert("最多只能选择" + 1 + "张图片");
+						}
+					}); // 最多选择maximum张图片
+			}
+
+			function addRow() {
+				vm.items.listSlideData.push({
+					"description": "",
+					"imgUrl": "",
+					"imgUrlSmall": "",
+					"orderNum": '',
+					"title": "",
+					"url": ""
+				})
+			}
+
+			function delRow(_obj) {
+				var btn = ["确定", "取消"];
+				mui.confirm('考虑好了？', '确认删除吗？', btn, function(e) {
+					if(e.index == 0) {
+						util.removeObjWithArr(vm.items.listSlideData, _obj);
+					}
+				});
+
+			}
+
+			
+		</script>
+
+	</body>
+
+</html>

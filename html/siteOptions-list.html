@@ -1,0 +1,460 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link href="../css/mui-ex.css" rel="stylesheet" />
+
+		<style>
+			li {
+				list-style: none;
+			}
+			
+			.mui-input-group {
+				margin-top: 15px;
+			}
+			
+			.addOption {
+				width: 100%;
+				margin: 0 auto;
+				/*background-color: #61affe;
+				color: white;*/
+				border: none;
+				padding: 10px;
+				font-size: 18px;
+				margin-bottom: 60px;
+				/*background-color: #77b4f2;*/
+				background: linear-gradient(to right, #ffe259, #ffa751);
+				color: white;
+				margin-top: 20px;
+			}
+			
+			#btnComplete {
+				float: right;
+				line-height: 45px;
+				margin-right: 15px;
+			}
+		</style>
+
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav" id='header'>
+			<a class=" mui-icon mui-action-back mui-icon-left-nav mui-pull-left" id='back'></a>
+			<h1 class="mui-title">站点配置信息</h1>
+			<a id='btnComplete'>保存</a>
+		</header>
+		<div class="mui-content" id="content">
+			<div class="mui-content">
+				<div class="mui-input-group" v-for="(item,i) in items" :id='"op"+i'>
+					<div class="mui-input-row">
+						<label>名称：</label>
+						<input type="text" class="mui-input-clear mui-input-speech" v-model.trim="items[i].name" placeholder="请输入名称" name="v" data-name='rexName' @blur="xv($event,'rexName')">
+					</div>
+					<div class="mui-input-row">
+						<label>key：</label>
+						<input type="text" class="mui-input-clear mui-input-speech" v-model.trim="items[i].key" placeholder="请输入key" name="v" data-name="rexKey" @blur="xv($event,'rexKey')">
+					</div>
+					<div style='position: relative;overflow: hidden;'>
+						<textarea style='padding-right: 60px;' name="" rows="4" cols="" placeholder="请输入内容" v-model.trim="items[i].value" @focusin="showBtn($event)" @focusout="hideBtn($event)"></textarea>
+
+						<div style='text-align: center;top: 10%;position: absolute;right:-30%;'>
+							<button type="button" class="mui-btn " style='margin-bottom:10px ;' @tap='showActionSheet(item,i)'>图片</button>
+						</div>
+						<div style='text-align: center;top: 50%;position: absolute;right:-30%'>
+							<button type="button" class="mui-btn " style='margin-bottom:10px ;' @tap='del(item)'>地图</button>
+						</div>
+					</div>
+
+					<div style='text-align: center;'>
+						<button type="button" class="mui-btn mui-btn-danger" style='margin-bottom:10px ;' @tap='del(item)'>×删除</button>
+					</div>
+				</div>
+
+				<div class="mui-row" id='btn'>
+					<div class="mui-col-sm-12 mui-col-xs-12">
+						<li class="mui-table-view-cell">
+							<button type="button" id='p_btn' class='addOption' @tap='addOptionInput()'>添加配置</button>
+						</li>
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<script src="../js/immersed.js"></script>
+		<script src="../js/mui.min.js"></script>
+		<script src="../js/vue.min.js"></script>
+		<script src="../js/myApp.js"></script>
+		<!--<script src="../js/util.js"></script>-->
+		<script src="../js/myutil.js"></script>
+		<script src="../js/x-validate.js"></script>
+		<script type="text/javascript">
+			mui.init();
+
+			mui.plusReady(function() {
+				// 隐藏滚动条
+				plus.webview.currentWebview().setStyle({
+					scrollIndicator: 'none'
+				});
+			});
+
+			var siteId = app.getSiteInfo().id;
+
+			var items = [{
+					id: '1',
+					name: '联系人',
+					key: 'person',
+					siteId: siteId,
+					type: '',
+					value: ''
+				},
+				{
+					id: '2',
+					name: '移动电话',
+					key: 'moblie',
+					siteId: siteId,
+					type: '',
+					value: ''
+				},
+				{
+					id: '3',
+					name: '座机',
+					key: 'telephone',
+					siteId: siteId,
+					type: '',
+					value: ''
+				},
+				{
+					id: '4',
+					name: '传真',
+					key: 'fax',
+					siteId: siteId,
+					type: '',
+					value: ''
+				},
+				{
+					id: '5',
+					name: '邮编',
+					key: 'zip',
+					siteId: siteId,
+					type: '',
+					value: ''
+				},
+				{
+					id: '6',
+					name: '地址',
+					key: 'address',
+					siteId: siteId,
+					type: '',
+					value: ''
+				},
+				{
+					id: '7',
+					name: '邮箱',
+					key: 'email',
+					siteId: siteId,
+					type: '',
+					value: ''
+				},
+				{
+					id: '8',
+					name: 'QQ号码',
+					key: 'qq',
+					siteId: siteId,
+					type: '',
+					value: ''
+				},
+				{
+					id: '9',
+					name: '微信号',
+					key: 'weixin',
+					siteId: siteId,
+					type: '',
+					value: ''
+				},
+				{
+					id: '10',
+					name: '支付宝',
+					key: 'alipay',
+					siteId: siteId,
+					type: '',
+					value: ''
+				},
+				{
+					id: '11',
+					name: '400电话',
+					key: '400',
+					siteId: siteId,
+					type: '',
+					value: ''
+				}
+			]
+
+			var vm = new Vue({
+				el: '#content',
+				data: {
+					items: []
+				}
+
+			})
+
+			function showBtn(event) {
+				var obj = event.target;
+				obj.nextElementSibling.setAttribute('style', 'text-align: center;top: 10%;position: absolute;right:10px;transform: all;transition: 0.5s');
+				obj.nextElementSibling.nextElementSibling.setAttribute('style', 'text-align: center;top: 50%;position: absolute;right:10px;transform: all;transition: 0.5s');
+			}
+
+			function hideBtn(event) {
+				var obj = event.target;
+				obj.nextElementSibling.setAttribute('style', 'text-align: center;top: 10%;position: absolute;right:-30%;transform: all;transition: 0.5s');
+				obj.nextElementSibling.nextElementSibling.setAttribute('style', 'text-align: center;top: 50%;position: absolute;right:-30%;transform: all;transition: 0.5s');
+			}
+
+			app.siteOptionsList(1, 30, function(data) {
+				if(JSON.stringify(data) == '[]') {
+					vm.items = items;
+				} else {
+					vm.items = data;
+				}
+
+			});
+
+			document.getElementById("btnComplete").addEventListener('tap', function(data) {
+				app.updateBatchAll(vm.items, function(data) {
+					mui.toast('修改成功');
+					old_back();
+				});
+			});
+
+			function insertAfter(newElement, targentElement) {
+				var parent = targentElement.parentNode;
+				if(parent.lastChild == targentElement) {
+					parent.appendChild(newElement);
+				} else {
+					parent.insertBefore(newElement, targentElement.nextSibling)
+				}
+			}
+
+			function addOptionInput() {
+
+				vm.items.push({
+					name: '',
+					key: '',
+					siteId: siteId,
+					type: '',
+					value: ''
+				})
+
+			}
+
+			function del(item) {
+
+				var btn = ["确定", "取消"];
+				mui.confirm('考虑好了？', '确认删除吗？', btn, function(e) {
+					if(e.index == 0) {
+						util.removeObjWithArr(vm.items, item);
+					}
+				});
+
+			}
+
+			//备份mui.back，mui.back已将窗口关闭逻辑封装的比较完善（预加载及父子窗口），因此最好复用mui.back
+			var old_back = mui.back;
+			mui.back = function() {
+				var btn = ["确定", "取消"];
+				mui.confirm('确认关闭当前窗口？', '尚未保存', btn, function(e) {
+					if(e.index == 0) {
+						//执行mui封装好的窗口关闭逻辑；
+						old_back();
+					}
+				});
+			}
+
+			//自定义事件
+			//			document.addEventListener('refresh', function() {
+			//				
+			//			});
+
+			//-------------------------------------------
+
+			function showActionSheet(item, index, type) {
+
+				var bts = [{
+					title: "相册"
+				}, {
+					title: "拍照"
+				}];
+				plus.nativeUI.actionSheet({
+						cancel: "取消",
+						buttons: bts
+					},
+					function(e) {
+						//打开相册
+						if(e.index == 1) {
+							galleryImgsSelected(item, index, type);
+						}
+						//打开拍照
+						if(e.index == 2) {
+							getImage(item, index, type);
+						}
+					}
+				);
+			}
+
+			/*小数转百分数*/
+			/*Number()数据类型转换，指定截取转换后的小数点后几位(四舍五入)*/
+			function toPercent(point) {
+				var str = Number(point * 100).toFixed(1);
+				str += "%";
+				return str;
+			}
+
+			/*百分数转小数*/
+			function toPoint(percent) {
+				var str = percent.replace("%", "");
+				str = str / 100;
+				return str;
+			}
+
+			function loadImage(url, callback) {
+				app.log("加载的图片路径是：" + url);
+				var img = new Image();
+				img.onload = function() {
+					img.onload = null;
+					callback(img);
+					//					return img;
+				}
+				img.src = url;
+			}
+
+			//获取图片宽度，的得到缩放百分比
+			function getImgPercent(img) {
+				var p;
+				console.log('width:' + img.width + ',height:' + img.height);
+				if(img.width > 200) {
+					var c = 200 / img.width;
+					p = toPercent(c);
+				} else {
+					p = "100%";
+				}
+				return p;
+			}
+
+			//图片压缩
+			function compressImage(img, p, callback) {
+
+				plus.zip.compressImage({
+					src: img.src,
+					dst: "_doc/gallery/" + img.src,
+					quality: 20,
+					width: p,
+					overwrite: true
+				}, function(e) {
+					//					console.log("e.target:" + e.target);
+					//					for(var i in e){
+					//						console.log(i+"---"+e[i]);
+					//					}
+					return callback(e.target);
+				}, function(err) {
+					console.error("压缩失败：" + err.message);
+				});
+			}
+
+			//从相册获取图片
+			function galleryImgsSelected(item, index, type) {
+				plus.gallery.pick(function(e) {
+
+						loadImage(e.files[0], function(img) {
+							console.log("img:" + img.width);
+							//获取百分比
+							var p = getImgPercent(img);
+							console.log("p1:" + p)
+							//压缩图片
+							compressImage(img, p, function(url) {
+								var id = '';
+								if(type == 1) {
+									id = "#anProbar" + index;
+								} else if(type == 2) {
+									id = "#ctProbar" + index;
+								} else if(type == 0) {
+									id = "#probar1";
+								}
+								console.log("url:" + url)
+//								mui(id).progressbar().show();
+								app.singleUpload(url, function(data) {
+									vm.items[index].value = data;
+//									mui(id).progressbar().hide();
+								});
+
+							})
+
+						});
+
+					},
+					function(e) {
+						console.log('取消选择图片');
+					}, {
+						filter: 'none',
+						multiple: true,
+						maximum: 1,
+						selected: null, //lfs 则会记住上次的选择，null 则不会记住上次的选择
+						system: false,
+						onmaxed: function() {
+							plus.nativeUI.alert("最多只能选择" + 1 + "张图片");
+						}
+					}); // 最多选择maximum张图片
+			}
+
+			//拍照获取图片
+			function getImage(item, index, type) {
+				var cmr = plus.camera.getCamera();
+				cmr.captureImage(function(p) {
+					app.log('成功：' + p);
+					plus.io.resolveLocalFileSystemURL(p, function(entry) {
+
+						loadImage(entry.toLocalURL(), function(img) {
+							console.log("img:" + img.width);
+							//获取百分比
+							var p = getImgPercent(img);
+							console.log("p:" + p)
+							//压缩图片
+							compressImage(img, p, function(url) {
+								var id = '';
+								if(type == 1) {
+									id = "#anProbar" + index;
+								} else if(type == 2) {
+									id = "#ctProbar" + index;
+								} else if(type == 0) {
+									id = "#probar1";
+								}
+								console.log("url:" + url)
+//								mui(id).progressbar().show();
+								app.singleUpload(url, function(data) {
+									vm.items[index].value = data;
+//									mui(id).progressbar().hide();
+								});
+
+							})
+
+						});
+
+					}, function(e) {
+						app.log('读取拍照文件错误：' + e.message);
+					});
+				}, function(e) {
+					app.log('失败：' + e.message);
+				}, {
+					filename: '_doc/camera/',
+					index: 1
+				});
+			}
+
+			//----------------------------------------------
+		</script>
+	</body>
+
+</html>
