@@ -1,0 +1,74 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<style>
+			.dc{
+				overflow: scroll;
+				height: 200px;
+				border: 1px solid red;
+			}
+			/*.list-wrap{
+				overflow: scroll;
+			}*/
+		</style>
+		
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <h1 class="mui-title">标题</h1>
+		</header>
+		<div class="mui-content">
+		    <iframe src="https://www.baidu.com/" width="100%" height="400px"></iframe>
+		    <div class="dc">
+		    	<ul class="mui-table-view">
+		    	        <li class="mui-table-view-cell">
+		    	            <a class="mui-navigate-right">
+		    	                Item 1
+		    	            </a>
+		    	        </li>
+		    	        <li class="mui-table-view-cell">
+		    	            <a class="mui-navigate-right">
+		    	                 Item 2
+		    	            </a>
+		    	        </li>
+		    	        <li class="mui-table-view-cell">
+		    	            <a class="mui-navigate-right">
+		    	                 Item 3
+		    	            </a>
+		    	        </li>
+		    	    </ul>
+		    	    <ul class="mui-table-view">
+		    	            <li class="mui-table-view-cell">
+		    	                <a class="mui-navigate-right">
+		    	                    Item 1
+		    	                </a>
+		    	            </li>
+		    	            <li class="mui-table-view-cell">
+		    	                <a class="mui-navigate-right">
+		    	                     Item 2
+		    	                </a>
+		    	            </li>
+		    	            <li class="mui-table-view-cell">
+		    	                <a class="mui-navigate-right">
+		    	                     Item 3
+		    	                </a>
+		    	            </li>
+		    	        </ul>
+		    </div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			
+			document.getElementsByClassName("list-wrap")[0].setAttribute('style','width: 100%;position: absolute;    background-color: #fff;z-index: 1;bottom: 0;left: 0;overflow: scroll;')
+		</script>
+	</body>
+
+</html>

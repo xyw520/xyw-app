@@ -88,6 +88,16 @@
 						设置
 					</a>
 				</li>
+				<li class="mui-table-view-cell" id='demo'>
+					<a class="mui-navigate-right">
+						demo
+					</a>
+				</li>
+				<li class="mui-table-view-cell" id='dmc'>
+					<a class="mui-navigate-right">
+						动态
+					</a>
+				</li>
 			</ul>
 
 			<p class='x-p mui-badge-warning mui-badge-inverted'>让管理站点变得如此简单</p>
@@ -104,6 +114,32 @@
 		<script src="../js/release.js"></script>
 		<script type="text/javascript">
 			mui.init();
+
+			document.getElementById("demo").addEventListener('tap', function() {
+				mui.openWindow({
+					url: 'demo.html',
+					id: 'demo',
+					styles: {
+						titleNView: { // 窗口的标题栏控件
+							titleText: "编辑器", // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+							titleColor: "#FFFFFF", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+							titleSize: "17px", // 字体大小,默认17px
+							backgroundColor: "#FAC850", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+							autoBackButton: true,
+
+						}
+					},
+				});
+			});
+
+			document.getElementById("dmc").addEventListener('tap', function() {
+
+				mui.openWindow({
+					url: 'dynamic-list.html',
+					id: 'dynamic-list',
+				});
+
+			});
 
 			defaultImg();
 			showNiceName();

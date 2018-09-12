@@ -65,7 +65,7 @@
 							<button type="button" class="mui-btn " style='margin-bottom:10px ;' @tap='showActionSheet(item,i)'>图片</button>
 						</div>
 						<div style='text-align: center;top: 50%;position: absolute;right:-30%'>
-							<button type="button" class="mui-btn " style='margin-bottom:10px ;' @tap='del(item)'>地图</button>
+							<button type="button" class="mui-btn " style='margin-bottom:10px ;' @tap='showMap(item,i)'>位置</button>
 						</div>
 					</div>
 
@@ -273,6 +273,35 @@
 					}
 				});
 			}
+
+			//显示地图
+			function showMap(item, i) {
+				mui.openWindow({
+					url: 'map.html',
+					//					url: 'https://apis.map.qq.com/tools/locpicker?search=1&type=1&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp',
+					id: 'map',
+					styles: {
+						titleNView: { // 窗口的标题栏控件
+							titleText: "地图", // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+							titleColor: "#FFFFFF", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+							titleSize: "17px", // 字体大小,默认17px
+							backgroundColor: "#FAC850", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+							autoBackButton: true,
+
+						}
+					},
+					extras: {
+						i: i
+					}
+				});
+			}
+
+			document.addEventListener('getMap', function(e) {
+				var loc = e.detail.loc;
+				var index = e.detail.i;
+				vm.items[index].value = JSON.stringify(loc);
+
+			});
 
 			//自定义事件
 			//			document.addEventListener('refresh', function() {

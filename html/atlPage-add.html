@@ -157,6 +157,8 @@
 			
 			.option div li {
 				background-color: rgba(100, 100, 100, 0.1);
+				/*border-top: 1px solid #C8C7CC;
+				border-bottom: 1px solid #C8C7CC;*/
 				border-radius: 20px;
 				padding: 9px 15px;
 			}
@@ -200,142 +202,142 @@
 			<a class="mui-icon iconfont  mui-pull-right" style='font-size: 18px;line-height: 25px;' id='btnC'>发布</a>
 		</header>
 		<div class="mui-content" id='content'>
-					<form action="">
-						<div class="mui-input-row" style="margin: 10px 5px;">
-							<!--@blur="xv($event,'rexTitle')"-->
-							<input id='title' type="text" placeholder="请输入标题" name="v" data-name="rexTitle" v-model.trim="title" @blur="getTitle($event,title)">
-						</div>
-						<div class="mui-input-row" style="margin: 10px 5px;">
-							<textarea id="textarea" rows="8" placeholder="请输入内容" v-model.trim="content" @blur='getSeo(content)'></textarea>
-						</div>
+			<form action="">
+				<div class="mui-input-row" style="margin: 10px 5px;">
+					<!--@blur="xv($event,'rexTitle')"-->
+					<input id='title' type="text" placeholder="请输入标题" name="v" data-name="rexTitle" v-model.trim="title" @blur="getTitle($event,title)">
+				</div>
+				<div class="mui-input-row" style="margin: 10px 5px;">
+					<textarea id="textarea" rows="8" placeholder="请输入内容" v-model.trim="content" @blur='getSeo(content)'></textarea>
+				</div>
 
-						<div class="mui-row " id='myCamera'>
+				<div class="mui-row " id='myCamera'>
 
-							<div class="mui-col-xs-4 cameraicon" @click="app.showActionSheet()">
-								<span class="iconfont icon-xiangji"></span>
-								<span class="iconTxt">添加图片</span>
-							</div>
+					<div class="mui-col-xs-4 cameraicon" @click="app.showActionSheet()">
+						<span class="iconfont icon-xiangji"></span>
+						<span class="iconTxt">添加图片</span>
+					</div>
 
-						</div>
+				</div>
 
-						<div class="option mui-row">
+				<div class="option mui-row">
 
-							<div class="mui-col-sm-5 mui-col-xs-5">
-								<li class="mui-table-view-cell">
-									<a id='showUserPicker'>
-										<span class="iconfont icon-ziyuan"></span> <span id='result'>{{categoryName}}</span>
-									</a>
-								</li>
-							</div>
+					<div class="mui-col-sm-5 mui-col-xs-5" >
+						<li class="mui-table-view-cell">
+							<a id='showUserPicker'>
+								<span class="iconfont icon-ziyuan"></span> <span id='result'>{{categoryName}}</span>
+							</a>
+						</li>
+					</div>
 
-							<div class="mui-col-sm-12 mui-col-xs-12">
-								<li class="mui-table-view-cell">
-									<a id='location'>
-										<span class="iconfont icon-didian"></span> <span id='locationTxt'>{{address}}</span>
-									</a>
-								</li>
-							</div>
+					<div  id='location' class="mui-col-sm-5 mui-col-xs-5"  @tap='showMap()'>
+						<li class="mui-table-view-cell">
+							<a >
+								<span class="iconfont icon-didian"></span> <span id='locationTxt'>{{address}}</span>
+							</a>
+						</li>
+					</div>
 
-						</div>
+				</div>
 
-						<div class="seo">
-							<div class="mui-card">
-								<ul class="mui-table-view">
-									<li class="mui-table-view-cell mui-collapse ">
-										<a class="mui-navigate-right" href="#">SEO信息[可选填写/不填写自动生成]</a>
-										<div class="mui-collapse-content">
+				<div class="seo">
+					<div class="mui-card">
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell mui-collapse ">
+								<a class="mui-navigate-right" href="#">SEO信息[可选填写/不填写自动生成]</a>
+								<div class="mui-collapse-content">
 
-											<div class="mui-input-row">
-												<label>SEO标题</label>
-											</div>
-											<div>
-												<textarea id="content" v-model.trim='seoTitle' rows="4" placeholder="输入SEO标题" name="v" data-name="rexSeo" @blur="xv($event,'rexSeo','SEO标题')"></textarea>
-											</div>
-											<div class="mui-input-row">
-												<label>SEO关键词</label>
-											</div>
-											<div>
-												<textarea id="content" v-model.trim='seoKeywords' rows="4" placeholder="输入SEO关键词" name="v" data-name="rexSeo" @blur="xv($event,'rexSeo','SEO关键词')"></textarea>
-											</div>
-											<div class="mui-input-row mui-plus-visible">
-												<label>SEO描述</label>
-											</div>
-											<div>
-												<textarea id="content" v-model.trim='seoDescription' rows="4" placeholder="输入SEO描述" name="v" data-name="rexSeo" @blur="xv($event,'rexSeo','SEO描述')"></textarea>
-											</div>
+									<div class="mui-input-row">
+										<label>SEO标题</label>
+									</div>
+									<div>
+										<textarea id="content" v-model.trim='seoTitle' rows="4" placeholder="输入SEO标题" name="v" data-name="rexSeo" @blur="xv($event,'rexSeo','SEO标题')"></textarea>
+									</div>
+									<div class="mui-input-row">
+										<label>SEO关键词</label>
+									</div>
+									<div>
+										<textarea id="content" v-model.trim='seoKeywords' rows="4" placeholder="输入SEO关键词" name="v" data-name="rexSeo" @blur="xv($event,'rexSeo','SEO关键词')"></textarea>
+									</div>
+									<div class="mui-input-row mui-plus-visible">
+										<label>SEO描述</label>
+									</div>
+									<div>
+										<textarea id="content" v-model.trim='seoDescription' rows="4" placeholder="输入SEO描述" name="v" data-name="rexSeo" @blur="xv($event,'rexSeo','SEO描述')"></textarea>
+									</div>
+								</div>
+							</li>
+						</ul>
+
+					</div>
+				</div>
+
+				<div class="noCompulsory">
+					<div class="mui-card">
+						<ul class="mui-table-view">
+							<li class="mui-table-view-cell mui-collapse">
+								<a class="mui-navigate-right" href="#">非必填</a>
+								<div class="mui-collapse-content">
+
+									<div class="mui-input-row">
+										<label>排序号</label>
+										<div class="mui-numbox" data-numbox-min='1' data-numbox-max='999' style='float: left;'>
+											<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+											<input id="test" class="mui-input-numbox" type="number" value="5" v-model="orderNum" />
+											<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
 										</div>
-									</li>
-								</ul>
+									</div>
 
-							</div>
-						</div>
+									<div class="mui-input-row">
+										<label>路径</label>
+										<input type="text" placeholder="请输入路径" v-model.trim='path' @blur="atlPathUsed(path,'')">
+									</div>
+									<p style="text-align: center;"><span style='color:red'>{{degInfo}}</span></p>
+									<p style="text-align: center;"><span style='color:green'>{{sefInfo}}</span></p>
 
-						<div class="noCompulsory">
-							<div class="mui-card">
-								<ul class="mui-table-view">
-									<li class="mui-table-view-cell mui-collapse">
-										<a class="mui-navigate-right" href="#">非必填</a>
-										<div class="mui-collapse-content">
+									<div class="mui-input-row">
+										<label>作者</label>
+										<input type="text" placeholder="请输入作者" v-model.trim='author' name="v" data-name="rexLess20" @blur="xv($event,'rexLess20','作者')">
+									</div>
 
-											<div class="mui-input-row">
-												<label>排序号</label>
-												<div class="mui-numbox" data-numbox-min='1' data-numbox-max='999' style='float: left;'>
-													<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
-													<input id="test" class="mui-input-numbox" type="number" value="5" v-model="orderNum" />
-													<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
-												</div>
-											</div>
+									<div class="mui-input-row">
+										<label>编辑</label>
+										<input type="text" placeholder="请输入编辑" v-model.trim='editor' name="v" data-name="rexLess20" @blur="xv($event,'rexLess20','编辑')">
+									</div>
 
-											<div class="mui-input-row">
-												<label>路径</label>
-												<input type="text" placeholder="请输入路径" v-model.trim='path' @blur="atlPathUsed(path,'')">
-											</div>
-											<p style="text-align: center;"><span style='color:red'>{{degInfo}}</span></p>
-											<p style="text-align: center;"><span style='color:green'>{{sefInfo}}</span></p>
+									<div class="mui-input-row">
+										<label>来源</label>
+										<input type="text" placeholder="请输入来源" v-model.trim='infoSource' name="v" data-name="rexLess50" @blur="xv($event,'rexLess50','来源')">
+									</div>
 
-											<div class="mui-input-row">
-												<label>作者</label>
-												<input type="text" placeholder="请输入作者" v-model.trim='author' name="v" data-name="rexLess20" @blur="xv($event,'rexLess20','作者')">
-											</div>
+									<div class="mui-input-row">
+										<label>来源URL</label>
+										<input type="text" placeholder="请输入来源URL" v-model.trim='infoSourceUrl' name="v" data-name="rexLess255" @blur="xv($event,'rexLess255','来源网址')">
+									</div>
 
-											<div class="mui-input-row">
-												<label>编辑</label>
-												<input type="text" placeholder="请输入编辑" v-model.trim='editor' name="v" data-name="rexLess20" @blur="xv($event,'rexLess20','编辑')">
-											</div>
+									<div class="mui-input-row">
+										<label>发布时间</label>
+										<label id='resultDate' style='width: 45%;'></label>
+										<button id='demo1' data-options='{}' class="btn mui-btn mui-btn-block" style='float: right;width: 30%;font-size: 14px;'>选择时间 </button>
+									</div>
 
-											<div class="mui-input-row">
-												<label>来源</label>
-												<input type="text" placeholder="请输入来源" v-model.trim='infoSource' name="v" data-name="rexLess50" @blur="xv($event,'rexLess50','来源')">
-											</div>
-
-											<div class="mui-input-row">
-												<label>来源URL</label>
-												<input type="text" placeholder="请输入来源URL" v-model.trim='infoSourceUrl' name="v" data-name="rexLess255" @blur="xv($event,'rexLess255','来源网址')">
-											</div>
-
-											<div class="mui-input-row">
-												<label>发布时间</label>
-												<label id='resultDate' style='width: 45%;'></label>
-												<button id='demo1' data-options='{}' class="btn mui-btn mui-btn-block" style='float: right;width: 30%;font-size: 14px;'>选择时间 </button>
-											</div>
-
-											<div class="mui-input-row">
-												<label>点击数</label>
-												<div class="mui-numbox" data-numbox-min='1' data-numbox-max='999' style='float: left;'>
-													<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
-													<input id="test" class="mui-input-numbox" type="number" value="5" v-model="clickNum" />
-													<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
-												</div>
-											</div>
-
+									<div class="mui-input-row">
+										<label>点击数</label>
+										<div class="mui-numbox" data-numbox-min='1' data-numbox-max='999' style='float: left;'>
+											<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>
+											<input id="test" class="mui-input-numbox" type="number" value="5" v-model="clickNum" />
+											<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>
 										</div>
-									</li>
-								</ul>
+									</div>
 
-							</div>
-						</div>
+								</div>
+							</li>
+						</ul>
 
-					</form>
+					</div>
+				</div>
+
+			</form>
 
 		</div>
 		<script src="../js/immersed.js"></script>
@@ -364,7 +366,7 @@
 				plus.webview.currentWebview().setStyle({
 					scrollIndicator: 'none'
 				});
-				
+
 				var self;
 				self = plus.webview.currentWebview();
 				if(self.cateName == undefined || self.cateName == null || self.cateName == '') {
@@ -413,7 +415,6 @@
 						}, false);
 					});
 				}
-				
 
 			});
 
@@ -454,7 +455,7 @@
 				"titleShort": '',
 				mapProvider: '', //地图坐标提供商 可以不填写
 				poi: '', //手机端发布信息坐标 可以不填写
-				address: '', //手机端发布信息地点 可以不填写
+				address: '选择位置', //手机端发布信息地点 可以不填写
 
 				city: '', //市
 				district: '', //区
@@ -490,6 +491,38 @@
 					vm.seoTitle = title;
 				}
 			}
+
+			//显示地图
+			function showMap() {
+				mui.openWindow({
+					url: 'map.html',
+					id: 'map',
+					styles: {
+						titleNView: { // 窗口的标题栏控件
+							titleText: "地图", // 标题栏文字,当不设置此属性时，默认加载当前页面的标题，并自动更新页面的标题
+							titleColor: "#FFFFFF", // 字体颜色,颜色值格式为"#RRGGBB",默认值为"#000000"
+							titleSize: "17px", // 字体大小,默认17px
+							backgroundColor: "#FAC850", // 控件背景颜色,颜色值格式为"#RRGGBB",默认值为"#F7F7F7"
+							autoBackButton: true,
+
+						}
+					}
+
+				});
+			}
+
+			//自定义事件，接受地图信息
+			document.addEventListener('getMap', function(e) {
+				var loc = e.detail.loc;
+				var index = e.detail.i;
+				//				vm.items[index].value =JSON.stringify(loc) ;
+				//				console.log('loc:'+JSON.stringify(loc))
+				vm.address = loc.poiname + "·" + loc.poiaddress;
+//				vm.mapProvider = "百度地图，坐标系类型：" + p.coordsType;
+				vm.poi = loc.latlng;
+				
+				document.getElementById("location").setAttribute('class','mui-col-sm-12 mui-col-xs-12 ')
+			});
 
 			/**
 			 * 删除元素
@@ -756,7 +789,7 @@
 			})(mui);
 		</script>
 
-		<script type="text/javascript">
+		<!--<script type="text/javascript">
 			// 扩展API加载完毕后调用onPlusReady回调函数 
 			document.addEventListener('plusready', onPlusReady, false);
 			// 扩展API加载完毕，现在可以正常调用扩展API
@@ -778,7 +811,7 @@
 					alert('Geolocation error: ' + e.message);
 				});
 			}
-		</script>
+		</script>-->
 
 	</body>
 

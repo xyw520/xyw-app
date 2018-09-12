@@ -93,7 +93,6 @@
 				color: white;
 				margin-top: 20px;
 			}
-			
 		</style>
 	</head>
 
@@ -102,7 +101,7 @@
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">添加幻灯片</h1>
 			<!--<a id='btnComplete'>完成</a>-->
-			<a class="mui-icon iconfont  mui-pull-right" style='font-size: 18px;line-height: 25px;'  id='btnComplete'>完成</a>
+			<a class="mui-icon iconfont  mui-pull-right" style='font-size: 18px;line-height: 25px;' id='btnComplete'>完成</a>
 		</header>
 		<div class="mui-content" id='content'>
 			<div class='mui-card'>
@@ -242,7 +241,7 @@
 		<script src="../js/immersed.js"></script>
 		<script src="../js/mui.min.js"></script>
 		<script src="../js/myApp.js"></script>
-		<script src="../js/util.js"></script>
+		<script src="../js/myutil.js"></script>
 		<script src="../js/x-validate.js"></script>
 		<script src="../js/vue.min.js"></script>
 
@@ -364,7 +363,7 @@
 				var btn = ["确定", "取消"];
 				mui.confirm('确认删除？', '删除后将不可恢复', btn, function(e) {
 					if(e.index == 0) {
-						
+
 						if(flag == 1) {
 							app.imgDel(vm.listSlideData[index].imgUrl, function(data) {
 								vm.listSlideData[index].imgUrl = ''; //给图片路径赋值为空后，根据vue双向绑定特性，应该会“删掉”图片，但是没有。用了v-if做判断，；才有了“删除”效果
@@ -375,7 +374,7 @@
 								vm.listSlideData[index].imgUrlSmall = ''; //给图片路径赋值为空后，根据vue双向绑定特性，应该会“删掉”图片，但是没有。用了v-if做判断，；才有了“删除”效果
 							});
 						}
-						
+
 					}
 				});
 
@@ -471,19 +470,38 @@
 			}
 
 			function addRow() {
-				items.listSlideData[0].orderNum++
+				if(items.listSlideData.length == 0) {
 					items.listSlideData.push({
 						"description": "",
 						"imgUrl": "",
 						"imgUrlSmall": "",
-						"orderNum": items.listSlideData[0].orderNum,
+						"orderNum": 1,
 						"title": "",
 						"url": ""
 					})
+				} else {
+					items.listSlideData[0].orderNum++
+						items.listSlideData.push({
+							"description": "",
+							"imgUrl": "",
+							"imgUrlSmall": "",
+							"orderNum": items.listSlideData[0].orderNum,
+							"title": "",
+							"url": ""
+						})
+				}
+
 			}
 
 			function delRow(_obj) {
-				util.removeObjWithArr(vm.listSlideData, _obj);
+				var btn = ["确定", "取消"];
+				mui.confirm('考虑好了？', '确认删除吗？', btn, function(e) {
+					if(e.index == 0) {
+						items.listSlideData[0].orderNum--
+						util.removeObjWithArr(items.listSlideData, _obj);
+					}
+				});
+
 			}
 
 			/**

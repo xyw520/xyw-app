@@ -33,11 +33,18 @@
 		<script src="../js/mui.min.js"></script>
 		<script type="text/javascript">
 			mui.init()
+			
+			var w_list=null;
 			mui.plusReady(function() {
 				_self = plus.webview.currentWebview();
 
 				_self.setStyle({
 					popGesture: 'close' //开启侧滑关闭功能
+				});
+				
+				w_list=mui.preload({
+					url: 'spp-list.html',
+					id: 'spp-list',
 				});
 			});
 			document.getElementById("addCate").addEventListener('tap', function() {
@@ -51,13 +58,15 @@
 			});
 
 			document.getElementById("addSinglePage").addEventListener('tap', function() {
-				mui.openWindow({
-					url: 'spp-list.html',
-					id: 'spp-list',
-					show: {
-						aniShow: 'slide-in-right'
-					}
-				});
+//				mui.openWindow({
+//					url: 'spp-list.html',
+//					id: 'spp-list',
+//					show: {
+//						aniShow: 'slide-in-right'
+//					}
+//				});
+
+				w_list.show('slide-in-right',300)
 			});
 		</script>
 	</body>

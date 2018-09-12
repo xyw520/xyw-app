@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+
+		<style>
+
+		</style>
+	</head>
+
+	<body>
+		<!--<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">地图</h1>
+		</header>-->
+		<div class="mui-content">
+
+			<iframe id="mapPage" width="100%" height="700px" frameborder=0 src="https://apis.map.qq.com/tools/locpicker?search=1&type=1&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77&referer=myapp">
+                        </iframe>
+
+		</div>
+		<script>
+			window.PointerEvent = undefined
+		</script>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+
+			var view = null;
+			var ws = null;
+
+			window.addEventListener('message', function(event) {
+				// 接收位置信息，用户选择确认位置点后选点组件会触发该事件，回传用户的位置信息
+				var loc = event.data;
+				if(loc && loc.module == 'locationPicker') { //防止其他应用也会向该页面post信息，需判断module是否为'locationPicker'
+					console.log('location', JSON.stringify(loc));
+					mui.fire(view, 'getMap', {
+						loc: loc,
+						i: ws.i
+					});
+					mui.back();
+				}
+			}, false);
+
+			mui.plusReady(function() {
+				
+				ws = plus.webview.currentWebview();
+				//				var f=ws.i;
+				//				console.log("i:"+ws.i)
+				//				console.log(ws.i==undefined)
+				//				console.log(f==null)
+				//				console.log(f=='')
+				if(ws.i == undefined || ws.i == null || ws.i == '' && ws.i != 0) {
+					console.log("i:" + ws.i)
+					view = plus.webview.getWebviewById('atlPage-add');
+				} else {
+					view = plus.webview.getWebviewById('siteOptions-list');
+				}
+
+				console.log("view:" + view.id)
+				
+				
+				
+				//				setTimeout(function(){
+				//					
+				//					console.log(document.getElementsByClassName("list-wrap")[0].innerHTML)
+				//				},1000)
+
+				//				document.getElementsByClassName("list-wrap")[0].setAttribute('style','width: 100%;position: absolute;    background-color: #fff;z-index: 1;bottom: 0;left: 0;overflow: scroll;')
+
+			});
+		</script>
+	</body>
+
+</html>

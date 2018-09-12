@@ -1,0 +1,418 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+
+		<style type="text/css">
+			/*#wrap {
+				position: relative;
+			}*/
+			
+			.ye-text {
+				height: 632px;
+				width: 100%;
+				border: 1px solid #C0C0C0;
+				padding: 15px;
+				-webkit-user-select: text;
+				/*position: absolute;
+				top: 0;
+				left: 0;*/
+			}
+			
+			div * {
+				-webkit-user-select: text
+			}
+			/*div {
+				-webkit-user-select: text;
+				height: auto;
+			}*/
+			
+			.ye-nav {
+				height: 40px;
+				width: 100%;
+				background-color: #CCCCCC;
+				position: fixed;
+				bottom: 0;
+			}
+			
+			.ye-nav .mui-row div {
+				text-align: center;
+			}
+			/*.ye-nav ul {
+				margin: 0;
+				padding: 0;
+			}
+			
+			.ye-nav ul li {
+				width: 20%;
+				padding: 20px;
+			}*/
+		</style>
+
+	</head>
+
+	<body>
+		<div class="mui-content">
+			<div id='wrap'>
+				<div id='yourEditor' contenteditable='true' class="ye-text">
+					<p id='d'><br></p>
+				</div>
+				<div id='navControl'>
+					<div class="ye-nav">
+						<div class="mui-row">
+							<div class="mui-col-sm-4 mui-col-xs-4 " id='getImg'>
+								<li class="mui-table-view-cell mui-icon mui-icon-image">
+								</li>
+							</div>
+							<div class="mui-col-sm-4 mui-col-xs-4">
+								<li class="mui-table-view-cell mui-icon mui-icon-image">
+								</li>
+							</div>
+							<div class="mui-col-sm-4 mui-col-xs-4">
+								<li class="mui-table-view-cell mui-icon mui-icon-image">
+								</li>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init();
+
+			document.getElementById("getImg").addEventListener('tap', function(e) {
+				var obj=e.target;
+//				alert(obj.tagName)
+				var url='../images/1448115.jpg';
+				var targetElement=document.getElementById("d");
+				createItem2(url,targetElement)
+			});
+
+			//创建图片缩略图列表
+			var createItem2 = function(url, targetElement) {
+
+				//				var obj = event.target;
+				//				var objParent;
+				//				if(obj.tagName == 'SPAN') {
+				//					objParent = obj.parentNode.parentNode;
+				//					app.log("objP:" + objParent.innerHTML);
+				//				} else if(obj.tagName == 'DIV') {
+				//					objParent = obj.parentNode;
+				//					app.log("objP:" + objParent.innerHTML);
+				//				}
+
+				//创建div
+				var objDiv = document.createElement('div');
+//				objDiv.setAttribute('class', 'cPics mui-col-xs-4');
+				//创建img
+				var objImg = document.createElement('img');
+				objImg.src = url;
+				objImg.setAttribute('style', 'width: 100%;');
+
+				objDiv.appendChild(objImg);
+
+				insertAfter(objDiv, targetElement)
+
+			}
+
+			// 自定义函数向后插入
+			function insertAfter(newElement, targetElement) {
+				var parent = targetElement.parentNode;
+				if(parent.lastChild == targetElement) {
+					// 如果最后的节点是目标元素，则直接添加。因为默认是最后
+					parent.appendChild(newElement);
+				} else {
+					//如果不是，则插入在目标元素的下一个兄弟节点的前面。也就是目标元素的后面
+					parent.insertBefore(newElement, targetElement.nextSibling);
+				}
+			}
+
+			document.getElementById("yourEditor").addEventListener('focusin', function() {
+				//				alert("软键盘弹出的事件处理")
+				//				
+				//				alert(ch-sh-wh) 
+
+				//				alert(ch-sh-wh);
+
+				//				var ch = document.documentElement.clientHeight; // 可见区域高度
+				//
+				//				var ch2 = document.body.clientHeight; //BODY对象高度 
+				//
+				//				var ch3 = document.body.clientHeight //网页可见区域高
+				//
+				//				var ch4 = document.body.scrollHeight //网页正文全文高
+				//
+				//				var ch5 = document.body.scrollTop //网页被卷去的高
+				//
+				//				var ch6 = window.screenTop //网页正文部分上
+				//
+				//				var ch7 = window.screen.availHeight //屏幕可用工作区高度
+				//
+				//				console.log("可见区域高度 ch:" + ch)
+				//				console.log("BODY对象高度 ch2:" + ch2)
+				//				console.log("网页可见区域高ch3:" + ch3)
+				//				console.log("网页正文全文高ch4:" + ch4)
+				//				console.log("网页被卷去的高ch5:" + ch5)
+				//				console.log("网页正文部分上ch6:" + ch6)
+				//				console.log("屏幕可用工作区高度ch7:" + ch7)
+
+			})
+
+			var sh;
+			var wh;
+			var ch;
+			mui.plusReady(function() {
+				sh = plus.navigator.getStatusbarHeight(); //状态栏高度
+				wh = plus.android.invoke(plus.android.currentWebview(), "getHeight") //Android里通过如下js代码可以得到webview的高度
+				wh = wh / plus.screen.scale;
+				ch = plus.screen.resolutionHeight;
+
+				//				wh_ios=plus.webview.currentWebview().getStyle().height
+
+				//								alert(sh)
+				//								alert(plus.screen.scale)
+				//								alert(wh)
+				//								alert(ch)
+
+				//原生titleNviw高度固定为44px，状态栏高度24px,webview 652, 652+24+44=720，也就是屏幕高度
+
+			});
+			//
+			//			var winHeight = window.innerHeight; //获取当前页面高度
+			//
+			//			let scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
+			//
+			//			console.log("winHeight:" + winHeight)
+			//			console.log("scrollTop:" + scrollTop)
+			//
+			//			var ch = document.documentElement.clientHeight; // 可见区域高度
+			//
+			//			var ch2 = document.body.clientHeight; //BODY对象高度 
+			//
+			//			var ch3 = document.body.clientHeight //网页可见区域高
+			//
+			//			var ch4 = document.body.scrollHeight //网页正文全文高
+			//
+			//			var ch5 = document.body.scrollTop //网页被卷去的高
+			//
+			//			var ch6 = window.screenTop //网页正文部分上
+			//
+			//			var ch7 = window.screen.availHeight //屏幕可用工作区高度
+			//
+			//			console.log("可见区域高度 ch:" + ch)
+			//			console.log("BODY对象高度 ch2:" + ch2)
+			//			console.log("网页可见区域高ch3:" + ch3)
+			//			console.log("网页正文全文高ch4:" + ch4)
+			//			console.log("网页被卷去的高ch5:" + ch5)
+			//			console.log("网页正文部分上ch6:" + ch6)
+			//			console.log("屏幕可用工作区高度ch7:" + ch7)
+			//
+			//			var ws = plus.webview.currentWebview();
+			//
+			//			//			for(var key in ws) {
+			//			//				console.log(key + "--" + ws[key])
+			//			//			}
+			//
+			//			document.getElementById("yourEditor").addEventListener('keyup', function(e) {
+			//				if(event.keyCode == 8) {
+			//					var chil = document.getElementById("yourEditor").children;
+			//					if(chil.length == 0) {
+			//						document.getElementById("yourEditor").innerHTML = '<p><br></p>'
+			//					}
+			//				}
+			//			});
+			//
+			//			document.getElementById("yourEditor").addEventListener('focusout', function() {
+			//				console.log("软键盘收起的事件处理")
+			//				winHeight = window.innerHeight; //获取当前页面高度
+			//				console.log("winHeight:" + winHeight)
+			//
+			//				scrollTop = Math.max(document.documentElement.scrollTop, document.body.scrollTop);
+			//				console.log("scrollTop:" + scrollTop)
+			//			})
+
+			//-------------------------------------------
+
+			function showActionSheet(item, index, type) {
+
+				var bts = [{
+					title: "相册"
+				}, {
+					title: "拍照"
+				}];
+				plus.nativeUI.actionSheet({
+						cancel: "取消",
+						buttons: bts
+					},
+					function(e) {
+						//打开相册
+						if(e.index == 1) {
+							galleryImgsSelected(item, index, type);
+						}
+						//打开拍照
+						if(e.index == 2) {
+							getImage(item, index, type);
+						}
+					}
+				);
+			}
+
+			/*小数转百分数*/
+			/*Number()数据类型转换，指定截取转换后的小数点后几位(四舍五入)*/
+			function toPercent(point) {
+				var str = Number(point * 100).toFixed(1);
+				str += "%";
+				return str;
+			}
+
+			/*百分数转小数*/
+			function toPoint(percent) {
+				var str = percent.replace("%", "");
+				str = str / 100;
+				return str;
+			}
+
+			function loadImage(url, callback) {
+				app.log("加载的图片路径是：" + url);
+				var img = new Image();
+				img.onload = function() {
+					img.onload = null;
+					callback(img);
+					//					return img;
+				}
+				img.src = url;
+			}
+
+			//获取图片宽度，的得到缩放百分比
+			function getImgPercent(img) {
+				var p;
+				console.log('width:' + img.width + ',height:' + img.height);
+				if(img.width > 200) {
+					var c = 200 / img.width;
+					p = toPercent(c);
+				} else {
+					p = "100%";
+				}
+				return p;
+			}
+
+			//图片压缩
+			function compressImage(img, p, callback) {
+
+				plus.zip.compressImage({
+					src: img.src,
+					dst: "_doc/gallery/" + img.src,
+					quality: 20,
+					width: p,
+					overwrite: true
+				}, function(e) {
+					//					console.log("e.target:" + e.target);
+					//					for(var i in e){
+					//						console.log(i+"---"+e[i]);
+					//					}
+					return callback(e.target);
+				}, function(err) {
+					console.error("压缩失败：" + err.message);
+				});
+			}
+
+			//从相册获取图片
+			function galleryImgsSelected(item, index, type) {
+				plus.gallery.pick(function(e) {
+
+						loadImage(e.files[0], function(img) {
+							console.log("img:" + img.width);
+							//获取百分比
+							var p = getImgPercent(img);
+							console.log("p:" + p)
+							//压缩图片
+							compressImage(img, p, function(url) {
+								var id = '';
+								if(type == 1) {
+									id = "#anProbar" + index;
+								} else if(type == 2) {
+									id = "#ctProbar" + index;
+								} else if(type == 0) {
+									id = "#probar1";
+								}
+								console.log("url:" + url)
+								//								mui(id).progressbar().show();
+								app.singleUpload(url, function(data) {
+									item.avatar = data;
+
+									//									mui(id).progressbar().hide();
+								});
+
+							})
+
+						});
+
+					},
+					function(e) {
+						console.log('取消选择图片');
+					}, {
+						filter: 'none',
+						multiple: true,
+						maximum: 1,
+						selected: null, //lfs 则会记住上次的选择，null 则不会记住上次的选择
+						system: false,
+						onmaxed: function() {
+							plus.nativeUI.alert("最多只能选择" + 1 + "张图片");
+						}
+					}); // 最多选择maximum张图片
+			}
+
+			//拍照获取图片
+			function getImage(item, index, type) {
+				var cmr = plus.camera.getCamera();
+				cmr.captureImage(function(p) {
+					app.log('成功：' + p);
+					plus.io.resolveLocalFileSystemURL(p, function(entry) {
+
+						loadImage(entry.toLocalURL(), function(img) {
+							console.log("img:" + img.width);
+							//获取百分比
+							var p = getImgPercent(img);
+							console.log("p:" + p)
+							//压缩图片
+							compressImage(img, p, function(url) {
+								var id = '';
+								if(type == 1) {
+									id = "#anProbar" + index;
+								} else if(type == 2) {
+									id = "#ctProbar" + index;
+								} else if(type == 0) {
+									id = "#probar1";
+								}
+								console.log("url:" + url)
+								mui(id).progressbar().show();
+								app.singleUpload(url, function(data) {
+									item.avatar = data;
+									mui(id).progressbar().hide();
+								});
+
+							})
+
+						});
+
+					}, function(e) {
+						app.log('读取拍照文件错误：' + e.message);
+					});
+				}, function(e) {
+					app.log('失败：' + e.message);
+				}, {
+					filename: '_doc/camera/',
+					index: 1
+				});
+			}
+
+			//----------------------------------------------
+		</script>
+	</body>
+
+</html>

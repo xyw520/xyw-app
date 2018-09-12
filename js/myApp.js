@@ -1169,22 +1169,45 @@
 	 * @param {Object} callback
 	 */
 	app.slideDel = function(item, callback) {
-		console.log("item.id:" + item.id)
-		app.ajax({
-			url: app.api['slideDel'],
+		//		app.ajax({
+		//			url: app.api['slideDel'],
+		//			data: {
+		//				id: item.id
+		//			},
+		//			showWaiting: true,
+		//			type: 'post',
+		//			success: function(data) {
+		//				app.log("data:" + data);
+		//				return callback(data.data);
+		//			},
+		//			error: function(xhr, type, errorThrown) {
+		//				app.log("xhr:" + xhr + " -type:" + type + " -errorThrown:" + errorThrown);
+		//			}
+		//		});
+		mui.ajax(app.api['slideDel'], {
 			data: {
-				id: item.id
+				id: item.id,
 			},
-			showWaiting: true,
-			type: 'post',
+			type: 'post', //HTTP请求类型
+			timeout: 10000, //超时时间设置为10秒；
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Authorization': app.getState().token,
+			},
 			success: function(data) {
-				app.log("data:" + data);
-				return callback(data.data);
+				mui.toast(data.message)
+				if(data.status == 200) {
+					return callback(true);
+				}else{
+					return callback(false);
+				}
 			},
 			error: function(xhr, type, errorThrown) {
+				//异常处理；
 				app.log("xhr:" + xhr + " -type:" + type + " -errorThrown:" + errorThrown);
 			}
 		});
+
 	}
 
 	/**
@@ -2816,18 +2839,28 @@
 	 * 删除单页面
 	 */
 	app.sppDel = function(sppInfo, callback) {
-		app.ajax({
-			url: app.api['sppDel'],
+
+		mui.ajax(app.api['sppDel'], {
 			data: {
 				id: sppInfo.id
 			},
-			showWaiting: true,
-			type: 'post',
+			dataType: 'json', //服务器返回json格式数据
+			type: 'post', //HTTP请求类型
+			timeout: 10000, //超时时间设置为10秒；
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+				'Authorization': app.getState().token,
+			},
 			success: function(data) {
-				app.log("data:" + data);
-				return callback(data.data);
+				mui.toast(data.message)
+				if(data.status == 200) {
+					return callback(true);
+				} else {
+					return callback(false);
+				}
 			},
 			error: function(xhr, type, errorThrown) {
+				//异常处理；
 				app.log("xhr:" + xhr + " -type:" + type + " -errorThrown:" + errorThrown);
 			}
 		});

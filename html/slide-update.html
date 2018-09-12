@@ -528,20 +528,34 @@
 			}
 
 			function addRow() {
-				vm.items.listSlideData.push({
-					"description": "",
-					"imgUrl": "",
-					"imgUrlSmall": "",
-					"orderNum": '',
-					"title": "",
-					"url": ""
-				})
+				if(vm.items.listSlideData.length == 0) {
+					vm.items.listSlideData.push({
+						"description": "",
+						"imgUrl": "",
+						"imgUrlSmall": "",
+						"orderNum": 1,
+						"title": "",
+						"url": ""
+					})
+				} else {
+					vm.items.listSlideData[0].orderNum++
+						vm.items.listSlideData.push({
+							"description": "",
+							"imgUrl": "",
+							"imgUrlSmall": "",
+							"orderNum": vm.items.listSlideData[0].orderNum,
+							"title": "",
+							"url": ""
+						})
+				}
+
 			}
 
 			function delRow(_obj) {
 				var btn = ["确定", "取消"];
 				mui.confirm('考虑好了？', '确认删除吗？', btn, function(e) {
 					if(e.index == 0) {
+						vm.items.listSlideData[0].orderNum--
 						util.removeObjWithArr(vm.items.listSlideData, _obj);
 					}
 				});

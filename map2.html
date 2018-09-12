@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<style type="text/css">
+			#container {
+				min-width: 600px;
+				min-height: 767px;
+			}
+		</style>
+	</head>
+
+	<body >
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">标题</h1>
+		</header>
+		<div class="mui-content" id='container'>
+
+		</div>
+		<script charset="utf-8" src="https://map.qq.com/api/js?v=2.exp"></script>
+		<script src="js/mui.min.js"></script>
+		<script>
+			mui.init();
+
+			window.onload = function() {
+
+				//直接加载地图
+
+				//初始化地图函数  自定义函数名init
+				function init() {
+					//定义map变量 调用 qq.maps.Map() 构造函数   获取地图显示容器
+					var map = new qq.maps.Map(document.getElementById("container"), {
+						center: new qq.maps.LatLng(39.916527, 116.397128), // 地图的中心地理坐标。
+						zoom: 8 // 地图的中心地理坐标。
+					});
+				}
+
+				//调用初始化函数地图
+				init();
+
+			}
+		</script>
+	</body>
+
+</html>
